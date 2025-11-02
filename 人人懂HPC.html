@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPC 解决方案 | 售前技术 FAQ</title>
+    <style>
+        /* 全局设置 */
+        html {
+            scroll-behavior: smooth; /* 页面平滑滚动 */
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.7;
+            background-color: #f4f7f6; /* 更柔和的背景色 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 顶部 Header */
+        header {
+            background-color: #004a99;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* 主体布局 (Flexbox) */
+        .page-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* --- 导航栏样式 (可收起) --- */
+        .faq-nav {
+            width: 280px; /* 增加宽度以容纳二级目录 */
+            flex-shrink: 0; /* 防止被压缩 */
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            
+            /* 粘性定位 */
+            position: sticky;
+            top: 20px; 
+            align-self: flex-start; /* 关键：使其粘在顶部 */
+            height: calc(100vh - 40px); /* 高度限制，使其可内部滚动 */
+            overflow-y: auto;
+        }
+        .faq-nav h3 {
+            font-size: 1.3em;
+            color: #004a99;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        /* L1 目录 (主类别) */
+        .l1-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .l1-menu > li {
+            margin-bottom: 5px;
+        }
+        .l1-link { /* L1 链接改为 button */
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            
+            text-decoration: none;
+            color: #004a99;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: 600; /* L1 加粗 */
+            transition: all 0.2s ease;
+            position: relative; /* 为箭头定位 */
+        }
+        .l1-link:hover {
+            background-color: #e6f7ff;
+            color: #0056b3;
+        }
+        .l1-link::after { /* 折叠箭头 */
+            content: '▼';
+            float: right;
+            font-size: 0.8em;
+            font-weight: 400;
+            transition: transform 0.3s ease;
+            transform-origin: center;
+        }
+        .l1-link.active::after { /* 箭头旋转 */
+            transform: rotate(180deg);
+        }
+
+        /* L2 目录 (Q: 问题) */
+        .l2-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 10px 20px; /* 缩进 */
+            border-left: 2px solid #e0e0e0;
+            overflow: hidden;
+            max-height: 0; /* 默认收起 */
+            transition: max-height 0.4s ease-in-out;
+        }
+        .l2-menu li a {
+            display: block;
+            text-decoration: none;
+            color: #444; /* L2 颜色稍浅 */
+            padding: 6px 15px;
+            font-size: 0.95em; /* L2 字体稍小 */
+            font-weight: 400;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .l2-menu li a::before { /* L2 目录小圆点 */
+            content: "•";
+            position: absolute;
+            left: -11px;
+            color: #007bff;
+            font-size: 1.2em;
+            line-height: 1.1;
+        }
+        .l2-menu li a:hover {
+            background-color: #f8f9fa;
+            color: #0056b3;
+            transform: translateX(3px);
+        }
+        /* --- 导航栏样式结束 --- */
+
+
+        /* 右侧主内容区 */
+        .faq-content {
+            flex-grow: 1; /* 占据剩余空间 */
+            min-width: 0; /* 修复 flex 溢出问题 */
+        }
+        .faq-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            scroll-margin-top: 20px; /* 锚点偏移，避免被顶部遮挡 */
+        }
+        .faq-section h2 {
+            font-size: 2em;
+            color: #004a99;
+            padding: 25px 35px;
+            margin: 0;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .faq-item-container {
+            padding: 10px 35px 25px 35px;
+        }
+        .faq-item {
+            border-bottom: 1px dashed #e0e0e0;
+            padding: 20px 0;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .faq-item:first-child {
+            padding-top: 10px;
+        }
+        .faq-item h3 {
+            font-size: 1.3em;
+            color: #333;
+            margin: 0 0 10px 0;
+            position: relative;
+            padding-left: 30px;
+            scroll-margin-top: 20px; /* Q: 锚点偏移 */
+        }
+        .faq-item h3::before {
+            content: 'Q:';
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            color: #007bff;
+        }
+        .faq-item p, .faq-item ul, .faq-item-grid, .faq-item-table, .calculator-form-container {
+            font-size: 1.05em;
+            color: #555;
+            margin-top: 5px;
+            position: relative;
+            padding-left: 30px;
+        }
+        .faq-item p::before, .faq-item ul::before, .faq-item-grid::before, .faq-item-table::before, .calculator-form-container::before {
+            content: 'A:';
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            color: #28a745;
+        }
+        .faq-item ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 15px;
+        }
+        .faq-item ul::before {
+            left: -15px; 
+        }
+        .faq-item li {
+            margin-bottom: 8px;
+        }
+        
+        /* GPU 参数列表专用样式 */
+        .gpu-specs {
+            list-style: none !important; /* 覆盖 A: 之前的 disc */
+            margin-left: 0px !important;
+            padding-left: 30px !important; /* 与 A: 对齐 */
+        }
+        .gpu-specs::before {
+            content: 'A:' !important; /* 确保 A: 存在 */
+            position: absolute !important;
+            left: 0 !important;
+            font-weight: 600 !important;
+            color: #28a745 !important;
+        }
+        .gpu-specs li {
+            margin-bottom: 5px !important;
+        }
+
+        /* 应用软件分类网格 */
+        .faq-item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 响应式网格 */
+            gap: 20px;
+            padding-left: 30px; /* 保持与 "A:" 对齐 */
+        }
+        .app-category {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        .app-category h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.15em;
+            color: #004a99;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .app-category ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .app-category ul::before { /* 移除网格内的 "A:" */
+           content: none;
+        }
+        .app-category li {
+            font-size: 0.95em;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        /* 表格样式 */
+        .faq-item-table {
+            padding-left: 30px; /* 保持 "A:" 的对齐 */
+        }
+        .faq-item-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+        .faq-item-table th, .faq-item-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .faq-item-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .faq-item-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        strong {
+            color: #d9534f; /* 强调色 */
+        }
+        code {
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        /* --- ADDED: 计算器样式 --- */
+        .calculator-form {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+        .form-group select,
+        .form-group input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f8f9fa;
+        }
+        .calc-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            height: 42px; /* 与输入框对齐 */
+        }
+        .calc-button:hover {
+            background-color: #0056b3;
+        }
+        #calc-result {
+            margin-top: 25px;
+            background-color: #e6f7ff;
+            border: 1px solid #b3e0ff;
+            border-left: 5px solid #007bff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        #calc-result h4 {
+            margin: 0 0 15px 0;
+            color: #004a99;
+            font-size: 1.2em;
+        }
+        #calc-result p {
+            margin: 5px 0;
+            font-size: 1.05em;
+            color: #333;
+        }
+        #calc-result code {
+            font-weight: 600;
+        }
+        .calc-error {
+            color: #d9534f !important;
+            font-weight: 600;
+        }
+        /* --- 计算器样式结束 --- */
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.95em;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HPC 高性能计算 售前技术 FAQ</h1>
+        <p>助您构建高效、稳定、易用的科研与仿真计算平台</p>
+    </header>
+
+    <div class="page-wrapper">
+        <nav class="faq-nav">
+            <h3>快速导航</h3>
+            <ul class="l1-menu">
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-server">💻 (一) 服务器</button>
+                    <ul id="l2-menu-server" class="l2-menu">
+                        <li><a href="#q-server-types">HPC为何需不同类型节点？</a></li>
+                        <li><a href="#q-server-gpu-diff">GPU/CPU服务器有何区别？</a></li>
+                        <li><a href="#q-server-memory-bandwidth">内存带宽如何计算与测试？</a></li>
+                        <li><a href="#q-server-hpl">什么是 HPL 基准测试？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-cpu">🧠 (二) CPU</button>
+                    <ul id="l2-menu-cpu" class="l2-menu">
+                        <li><a href="#q-cpu-choice">如何选择CPU：核数/主频/带宽？</a></li>
+                        <li><a href="#q-cpu-avx512">什么是 AVX-512 指令集？</a></li>
+                        <li><a href="#q-cpu-turin">AMD Turin (Zen 5) CPU 有何优势？</a></li>
+                        <li><a href="#q-cpu-gnr">Intel GNR-AP CPU 有何优势？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-gpu">🚀 (三) GPU 加速器</button>
+                    <ul id="l2-menu-gpu" class="l2-menu">
+                        <li><a href="#q-gpu-compare">GPU 选型总览 (HPC vs AI)</a></li>
+                        <li><a href="#q-gpu-h200">NVIDIA H200 详解</a></li>
+                        <li><a href="#q-gpu-h100">NVIDIA H100 (PCIe) 详解</a></li>
+                        <li><a href="#q-gpu-h20">NVIDIA H20 详解</a></li>
+                        <li><a href="#q-gpu-l20">NVIDIA L20 详解</a></li>
+                        <li><a href="#q-gpu-5090">GeForce RTX 5090 详解</a></li>
+                        <li><a href="#q-gpu-4090">GeForce RTX 4090 详解</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-storage">🗄️ (四) 分布式文件系统</button>
+                    <ul id="l2-menu-storage" class="l2-menu">
+                        <li><a href="#q-storage-tiering">HPC存储为什么要分层？</a></li>
+                        <li><a href="#q-storage-parallel-nfs">并行文件系统与NFS的区别？</a></li>
+                        <li><a href="#q-storage-lustre-details">Lustre 核心优势详解</a></li>
+                        <li><a href="#q-storage-gpfs-details">GPFS (Spectrum Scale) 详解</a></li>
+                        <li><a href="#q-storage-iozone">什么是 IOZONE 基准测试？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-network">🌐 (五) 互联网络</button>
+                    <ul id="l2-menu-network" class="l2-menu">
+                        <li><a href="#q-net-ib-gen">如何理清IB各代次？</a></li>
+                        <li><a href="#q-net-ndr-800g">NDR 400G为何用800G光模块？</a></li>
+                        <li><a href="#q-net-no-redundancy">IB网络为何不需要冗余？</a></li>
+                        <li><a href="#q-net-managed-switch">带/不带管理交换机区别？</a></li>
+                        <li><a href="#q-net-sm">什么是子网管理器 (SM)？</a></li>
+                        <li><a href="#q-net-compatibility">IB网卡跨代次兼容吗？</a></li>
+                        <li><a href="#q-net-connectors">400G光模块接口(OSFP/DD)区别？</a></li>
+                        <li><a href="#q-net-osfp-qsfpdd">OSFP和QSFP-DD能互通吗？</a></li>
+                        <li><a href="#q-net-roce-mode">IB网卡如何切为RoCE模式？</a></li>
+                        <li><a href="#q-net-naming">光模块命名(SR4/DR4)含义？</a></li>
+                        <li><a href="#q-net-latency-test">如何测试网络延时？</a></li>
+                        <li><a href="#q-net-nccl-test">什么是 NCCL 基准测试？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-job">📊 (六) 作业管理系统</button>
+                    <ul id="l2-menu-job" class="l2-menu">
+                        <li><a href="#q-job-slurm">什么是作业调度系统 (Slurm)？</a></li>
+                        <li><a href="#q-job-queue">什么是“队列/分区”？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-cluster">🖥️ (七) 集群管理系统</button>
+                    <ul id="l2-menu-cluster" class="l2-menu">
+                        <li><a href="#q-cluster-slurm-mgmt">作业调度 vs 集群管理？</a></li>
+                        <li><a href="#q-cluster-diskless">什么是“无盘”部署？</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-libs">📚 (八) 库、编译器与工具</button>
+                    <ul id="l2-menu-libs" class="l2-menu">
+                        <li><a href="#q-libs-mpi">什么是 MPI？</a></li>
+                        <li><a href="#q-libs-math">什么是数学库？</a></li>
+                        <li><a href="#q-lib-gcc">GNU 编译器 (GCC)</a></li>
+                        <li><a href="#q-lib-intel-compiler">Intel 编译器 (oneAPI)</a></li>
+                        <li><a href="#q-lib-nvidia-hpc-sdk">NVIDIA HPC SDK</a></li>
+                        <li><a href="#q-lib-bisheng">毕昇编译器 (bisheng)</a></li>
+                        <li><a href="#q-lib-mkl">Intel MKL</a></li>
+                        <li><a href="#q-lib-openblas">OpenBLAS</a></li>
+                        <li><a href="#q-lib-eigen">Eigen</a></li>
+                        <li><a href="#q-lib-armadillo">Armadillo</a></li>
+                        <li><a href="#q-lib-fftw">FFTW</a></li>
+                        <li><a href="#q-lib-gsl">GSL (GNU Scientific Library)</a></li>
+                        <li><a href="#q-lib-spooles">SPOOLES</a></li>
+                        <li><a href="#q-lib-dealii">Deal.II</a></li>
+                        <li><a href="#q-lib-hypre">Hypre</a></li>
+                        <li><a href="#q-lib-intel-mpi">Intel-MPI</a></li>
+                        <li><a href="#q-lib-openmpi">OpenMPI</a></li>
+                        <li><a href="#q-lib-hyper-mpi">Hyper-MPI</a></li>
+                        <li><a href="#q-lib-mpi4py">Mpi4py</a></li>
+                        <li><a href="#q-lib-cuda">NVIDIA CUDA Toolkit</a></li>
+                        <li><a href="#q-lib-cudnn">cuDNN</a></li>
+                        <li><a href="#q-lib-cublas">cuBLAS</a></li>
+                        <li><a href="#q-lib-cusparse">cuSPARSE</a></li>
+                        <li><a href="#q-lib-cusolver">cuSOLVER</a></li>
+                        <li><a href="#q-lib-cufft">cuFFT</a></li>
+                        <li><a href="#q-lib-pycuda">PyCUDA</a></li>
+                        <li><a href="#q-lib-cupy">Cupy</a></li>
+                        <li><a href="#q-lib-numba">Numba</a></li>
+                        <li><a href="#q-lib-python">Python</a></li>
+                        <li><a href="#q-lib-perl">PERL</a></li>
+                        <li><a href="#q-lib-r">R 语言</a></li>
+                        <li><a href="#q-lib-jdk">JDK (Java)</a></li>
+                        <li><a href="#q-lib-conda">Conda</a></li>
+                        <li><a href="#q-lib-singularity">Singularity / Apptainer</a></li>
+                        <li><a href="#q-lib-cmake">CMake</a></li>
+                        <li><a href="#q-lib-texlive">TeX Live</a></li>
+                        <li><a href="#q-lib-glibc">glibc</a></li>
+                        <li><a href="#q-lib-vtune">Intel Vtune Profiler</a></li>
+                        <li><a href="#q-lib-nvitop">nvitop</a></li>
+                        <li><a href="#q-lib-jobtop">JobTop 作业监控</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-apps">🧬 (九) 应用软件详解</button>
+                    <ul id="l2-menu-apps" class="l2-menu">
+                        <li><a href="#q-app-fluent">Ansys Fluent / CFX</a></li>
+                        <li><a href="#q-app-starccm">Star-CCM+</a></li>
+                        <li><a href="#q-app-comsol">COMSOL Multiphysics</a></li>
+                        <li><a href="#q-app-abaqus">Abaqus</a></li>
+                        <li><a href="#q-app-lsdyna">LS-DYNA</a></li>
+                        <li><a href="#q-app-openfoam">OpenFOAM</a></li>
+                        <li><a href="#q-app-gromacs">GROMACS</a></li>
+                        <li><a href="#q-app-namd">NAMD / VMD</a></li>
+                        <li><a href="#q-app-amber">Amber</a></li>
+                        <li><a href="#q-app-schrodinger">Schrödinger</a></li>
+                        <li><a href="#q-app-r-bioconductor">R (Bioconductor)</a></li>
+                        <li><a href="#q-app-blast">BLAST</a></li>
+                        <li><a href="#q-app-bwa">BWA</a></li>
+                        <li><a href="#q-app-gatk">GATK</a></li>
+                        <li><a href="#q-app-vasp">VASP</a></li>
+                        <li><a href="#q-app-gaussian">Gaussian</a></li>
+                        <li><a href="#q-app-lammps">LAMMPS</a></li>
+                        <li><a href="#q-app-materials-studio">Materials Studio</a></li>
+                        <li><a href="#q-app-quantum-espresso">Quantum Espresso</a></li>
+                        <li><a href="#q-app-alphafold2">AlphaFold2</a></li>
+                        <li><a href="#q-app-matlab">MATLAB</a></li>
+                        <li><a href="#q-app-mathematica">Mathematica</a></li>
+                        <li><a href="#q-app-jupyter">Jupyter / JupyterHub</a></li>
+                        <li><a href="#q-app-geant4">Geant4</a></li>
+                        <li><a href="#q-app-wrf">WRF (气象)</a></li>
+                        <li><a href="#q-app-pytorch">PyTorch</a></li>
+                        <li><a href="#q-app-tensorflow">TensorFlow</a></li>
+                    </ul>
+                </li>
+                <!-- ADDED: 新增 AI 基础 导航 -->
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-ai">🤖 (十) AI 大模型基础</button>
+                    <ul id="l2-menu-ai" class="l2-menu">
+                        <li><a href="#q-ai-concepts-rag">AI 核心概念 (RAG / Dify / ...)</a></li>
+                        <li><a href="#q-ai-model-formats">AI 模型文件格式 (safetensors / GGUF)</a></li>
+                        <li><a href="#q-ai-deployment-process">AI 模型部署流程概览</a></li>
+                        <li><a href="#q-ai-model-selection">AI 模型选型 (Llama / GLM / SD)</a></li>
+                    </ul>
+                </li>
+                <!-- MODIFIED: 计算器导航重编号 -->
+                <li>
+                    <button class="l1-link" data-target="#l2-menu-calculator">🕸️ (十一) 网络拓扑计算器</button>
+                    <ul id="l2-menu-calculator" class="l2-menu">
+                        <li><a href="#q-calculator-nonblocking">无阻塞网络计算</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="faq-content">
+
+            <!-- ... (章节 1 到 7 保持不变) ... -->
+            
+            <section id="section-server" class="faq-section">
+                <h2>💻 (一) 服务器 (节点)</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-server-types">一个 HPC 集群里为什么需要不同类型的服务器（节点）？</h3>
+                        <p>
+                            一个 HPC 集群是一个分工明确的系统，不同角色的服务器（节点）各司其职，以确保效率和稳定性：
+                        </p>
+                        <ul>
+                            <li><strong>管理节点 (Management Node):</strong> 集群的“司令部”。负责运行集群管理软件、作业调度器、监控系统等。<strong>稳定性</strong>是第一要求，通常配置RAID 1冗余。</li>
+                            <li><strong>登录节点 (Login Node):</strong> 用户的“入口”。用户在此编译代码、提交作业、管理文件。<strong>禁止在此节点运行大型计算</strong>，以免影响其他用户登录。</li>
+                            <li><strong>计算节点 (Compute Node):</strong> 集群的“主力军”。专门用于执行计算任务。它们通常是无盘的（通过网络启动），配置高度优化（例如，无不必要的服务），只接受作业调度系统的指派。</li>
+                            <li><strong>I/O 节点 (I/O Node):</strong> (可选) 专用于数据中转，作为并行文件系统的服务器（MDS/OSS），提供数据存储服务。</li>
+                            <li><strong>GPU 节点 (GPU Node):</strong> 特殊的计算节点，配备一个或多个高性能 GPU（如 H20, L20），专用于 AI 训练、分子动力学模拟等 GPU 加速任务。</li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-server-gpu-diff">GPU 服务器（如 8 卡 H20）和普通 CPU 服务器在设计上有什么关键区别？</h3>
+                        <p>
+                            GPU 服务器是为<strong>超高计算密度和能耗</strong>设计的。关键区别在于：
+                        </p>
+                        <ul>
+                            <li><strong>散热与供电：</strong> 一台 8 卡 H20 或 H100 的服务器总功耗可能高达 8-10kW，而普通 CPU 服务器仅 1-2kW。GPU 服务器必须有极其强大的冗余电源和风冷/液冷散热系统。</li>
+                            <li><strong>PCIe 拓扑：</strong> 如何连接 8 个 GPU 和 CPU 至关重要。高端服务器使用 <strong>PCIe Switch</strong> 或 NVSwitch 来保证 GPU 之间、GPU 与 CPU 之间、GPU 与网卡之间的数据交换带宽最高、延迟最低。</li>
+                            <li><strong>网络配置：</strong> 高端 GPU 节点（如 H20）通常会配置多个高速网卡 (如 400G InfiniBand)，以匹配其强大的计算能力，防止网络成为瓶颈。</li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-server-memory-bandwidth">如何计算和测试内存带宽？</h3>
+                        <p>
+                            <strong>理论带宽 (TB/s)：</strong> 内存带宽是 CPU 与内存之间数据传输的速率，是“访存密集型”应用的生命线。其理论计算公式为：
+                        </p>
+                        <p>
+                            <code>理论带宽 = 内存时钟频率 (MT/s) × 内存总线位宽 (Bytes) × 内存通道数</code>
+                        </p>
+                        <ul>
+                            <li><strong>例如：</strong> 一台支持 12 通道 DDR5-5600 内存的服务器：</li>
+                            <li><code>5600 (MT/s) × 8 (Bytes, 因 64-bit) × 12 (通道) = 537,600 MB/s ≈ 537.6 GB/s</code></li>
+                        </ul>
+                        <p>
+                            <strong>实际带宽 (Stream)：</strong> 理论带宽无法 100% 达到。我们使用 <strong>Stream</strong> 基准测试来测量实际的可持续内存带宽。
+                        </p>
+                        <ul>
+                            <li><strong>测试工具：</strong> 通常使用 <code>stream_c.exe</code> 或 <code>stream_f.exe</code>。</li>
+                            <li><strong>关键指标：</strong> 关注其 <strong>Triad (a[i] = b[i] + scalar * c[i])</strong> 项的得分。一个健康的 HPC 平台，其实际 Stream 带宽应达到理论带宽的 <strong>80-90%</strong>。</li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-server-hpl">什么是 HPL (High Performance Linpack) 基准测试？</h3>
+                        <p>
+                            HPL (High Performance Linpack) 是一个基准测试程序，用于测量 HPC 集群解算大型稠密线性方程组 (Ax=b) 的能力。
+                        </p>
+                        <ul>
+                            <li><strong>核心目的：</strong> HPL 是全球 <strong>Top500 超级计算机排名</strong>的标准。它旨在压榨集群的<strong>峰值浮点计算性能 (FLOPS)</strong>。</li>
+                            <li><strong>测试原理：</strong> 它是一个计算密集型（强依赖 CPU 浮点单元）和网络密集型（强依赖 MPI 通信）的任务。</li>
+                            <li><strong>售前价值：</strong> HPL 测试结果（单位 GFLOPS 或 TFLOPS）是衡量一个集群综合计算能力（CPU + 网络）的“黄金标准”，常用于项目验收，证明集群达到了设计的计算能力。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-cpu" class="faq-section">
+                <h2>🧠 (二) CPU (处理器)</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-cpu-choice">我应该如何选择 CPU？核心数、主频还是内存带宽？</h3>
+                        <p>
+                            <strong>没有最好的 CPU，只有最适合您应用的 CPU。</strong> 您必须了解您主要运行的软件是“计算密集型”还是“访存密集型”：
+                        </p>
+                        <ul>
+                            <li><strong>高核心数 (如 AMD EPYC):</strong> 适用于<strong>高吞吐量</strong>和易于并行的任务（如基因测序、渲染、Web 服务）。在相同价格下，核心数越多，能同时运行的进程就越多。</li>
+                            <li><strong>高主频 (如 Intel Xeon -G):</strong> 适用于<strong>受限于单核性能</strong>的应用（如部分传统 EDA 仿真、气象模式的特定模块）。这些“老旧”代码往往难以利用超多核心。</li>
+                            <li><strong>高内存带宽 (如 AMD EPYC, Intel Xeon Max):</strong> <strong>这是 HPC 中最常被忽视的瓶颈！</strong> 许多科学计算（如 CFD 流体力学、WRF 气象模拟）的瓶颈不在于计算多快，而在于 CPU 从内存读取数据的速度多快。</li>
+                        </ul>
+                        <p>
+                            <strong>售前建议：</strong> 请提供您最常用的 3-5 款软件名称，我们的专家会根据软件特性（AMDal 定律）为您推荐最佳 CPU 平台。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-cpu-avx512">什么是 AVX-512 指令集？它为什么对HPC重要？</h3>
+                        <p>
+                            AVX-512 (Advanced Vector Extensions 512) 是一种 <strong>512 位单指令多数据流 (SIMD)</strong> 指令集，主要由 Intel Xeon 处理器支持。
+                        </p>
+                        <ul>
+                            <li><strong>工作原理：</strong> 它允许 CPU 在一个时钟周期内，同时对多个数据执行相同的操作。例如，AVX-512 可以同时执行 <strong>8 个双精度 (64-bit)</strong> 或 <strong>16 个单精度 (32-bit)</strong> 的浮点数乘法。</li>
+                            <li><strong>HPC 价值：</strong> 科学计算（如 BLAS 矩阵运算、FFT 变换）中充满了这种可并行的矢量化操作。相比 256 位的 AVX2，AVX-512 能将 CPU 的理论浮点计算性能<strong>直接翻倍</strong>。</li>
+                            <li><strong>售前建议：</strong> 对于强依赖 MKL 库或编译优化的应用（如 VASP, GROMACS, Ansys），选择支持 AVX-512 的 CPU (如 Intel Xeon) 会带来显著的性能优势。</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-cpu-turin">AMD Turin (Zen 5) 平台在 HPC 领域的售前优势是什么？</h3>
+                        <p>
+                            AMD EPYC "Turin" (基于 Zen 5 架构) 是 HPC 市场的“吞吐量怪兽”，其售前核心优势在于<strong>极致的核心密度</strong>和<strong>领先的能效比</strong>。
+                        </p>
+                        <ul>
+                            <li><strong>超高核心数：</strong> Turin 提供了极高的核心数（例如，高达 192 核 / 384 线程）。对于可高度并行的 HPC 应用（如生物信息学、部分分子动力学）和虚拟化环境，这意味着单台服务器能提供无与伦比的吞吐量。</li>
+                            <li><strong>领先的内存带宽：</strong> 继承并强化了 EPYC 平台的优势，支持 12 通道 DDR5 内存，为“访存密集型”应用（如 CFD、气象）提供了巨大的数据通路。</li>
+                            <li><strong>PCIe 5.0 与 CXL：</strong> 提供海量的 PCIe 5.0 通道，非常适合连接多个 GPU 加速器或高速网络（如 NDR InfiniBand），确保 I/O 不会成为瓶颈。</li>
+                            <li><strong>能效比（TCO）：</strong> 凭借台积电先进工艺和 Zen 5 架构的能效改进，Turin 平台在提供强大算力的同时，能保持优异的“每瓦性能”，有助于降低数据中心的总体拥有成本 (TCO)。</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-cpu-gnr">Intel GNR-AP (Granite Rapids-AP) 平台在 HPC 领域的售前优势是什么？</h3>
+                        <p>
+                            Intel Xeon "Granite Rapids-AP" (GNR-AP) 平台是 Intel 专为 HPC 和 AI 打造的“性能利器”，其核心优势在于<strong>强大的单核性能、创新的内存技术</strong>和<strong>内置加速引擎</strong>。
+                        </p>
+                        <ul>
+                            <li><strong>纯P核设计：</strong> GNR-AP 放弃了 E-core，采用纯 P-core（性能核）设计。这意味着其所有核心都具备强大的单核计算能力和完整的 CPU 特性（如 AMX），非常适合那些对单核性能和指令集敏感的传统 HPC 仿真软件 (如 EDA, CAE)。</li>
+                            <li><strong>内置 AI 加速 (AMX)：</strong> 集成了先进的矩阵扩展 (AMX) 指令集。这使得 CPU 自身就能高效执行 AI 推理和小型训练任务，为 AI for Science (AI4S) 应用提供了“CPU+内置加速”的新范式。</li>
+                            <li><strong>超高内存带宽 (MCR)：</strong> 平台支持 12 通道 DDR5 内存，并且是业界首批支持 **MCR (Multiplexer Combined Ranks) DIMM** 的平台之一。MCR 技术能将内存速度提升到 8800 MT/s 甚至更高，极大缓解“内存墙”问题，对 CFD, WRF 等应用是巨大福音。</li>
+                            <li><strong>强大的扩展性：</strong> 同样支持 PCIe 5.0 和 CXL 2.0，使其在连接 GPU 和高速互联时游刃余地。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="section-gpu" class="faq-section">
+                <h2>🚀 (三) GPU 加速器</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-gpu-compare">GPU 选型总览：HPC (双精度) vs AI (带宽/容量) vs 开发 (性价比)？</h3>
+                        <p>
+                            这是一个核心问题。这些 GPU 的定位和设计取舍极大，选型错误会导致严重的成本浪费或性能瓶颈。
+                        </p>
+                        <p>
+                            <strong>售前选型核心总结：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>传统科学计算 (HPC)：</strong>如流体力学 (CFD)、材料模拟 (VASP)，这些<strong>强依赖 FP64 (双精度) 性能</strong>。<strong>必须选择 Hopper 架构 (H200, H100, H20)</strong>。Ada 架构 (L20, 4090) 的 FP64 性能被严格限制 (1/64)，完全不适用。</li>
+                            <li><strong>AI 大模型训练：</strong>瓶颈在<strong>显存带宽</strong>和<strong>显存容量</strong>。<strong>H200</strong> (141GB, 4.8 TB/s) 和 <strong>H20</strong> (96GB, 4.0 TB/s) 是首选。</li>
+                            <li><strong>AI 大模型推理：</strong>瓶颈在<strong>显存容量</strong>和<strong>能效</strong>。<strong>L20 (48GB)</strong> 是完美的推理卡，显存充足，功耗低。H20 (96GB) 也是极佳选择。</li>
+                            <li><strong>AI 开发/小模型微调：</strong>追求极致性价比。<strong>RTX 4090 (24GB)</strong> 或 <strong>RTX 5090 (32GB)</strong> 是个人开发者工作站的首选，能完成 4-bit 量化微调和中小型模型开发。</li>
+                        </ul>
+                        <p>
+                           下方是各卡详细参数。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-h200">NVIDIA H200 (SXM) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI训练/HPC 旗舰]</strong>。为最大规模 AI 和 HPC 打造，带宽和容量的王者。</li>
+                            <li><strong>架构:</strong> Hopper (GH100)</li>
+                            <li><strong>CUDA 核心:</strong> 16,896</li>
+                            <li><strong>Tensor 核心:</strong> 528 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> <strong>141 GB HBM3e</strong></li>
+                            <li><strong>显存带宽:</strong> <strong>4.8 TB/s</strong></li>
+                            <li><strong>FP64 (HPC):</strong> 34 TFLOPS (Dense)</li>
+                            <li><strong>FP32 (HPC):</strong> 67 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> 989 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> 1,979 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 900 GB/s (第 4 代)</li>
+                            <li><strong>TDP (功耗):</strong> 1000W (SXM 形态)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-h100">NVIDIA H100 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI训练/HPC 主力]</strong>。全能型数据中心主力，性能均衡。</li>
+                            <li><strong>架构:</strong> Hopper (GH100)</li>
+                            <li><strong>CUDA 核心:</strong> 14,592</li>
+                            <li><strong>Tensor 核心:</strong> 456 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 80 GB HBM3</li>
+                            <li><strong>显存带宽:</strong> 2.0 TB/s</li>
+                            <li><strong>FP64 (HPC):</strong> <strong>26 TFLOPS (Dense)</strong></li>
+                            <li><strong>FP32 (HPC):</strong> 51 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> 756 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> 1,513 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 600 GB/s (NVLink Bridge)</li>
+                            <li><strong>TDP (功耗):</strong> 350W (PCIe 形态)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-h20">NVIDIA H20 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[带宽密集型 AI/HPC]</strong>。牺牲算力，换取超大带宽和容量，适合推理。</li>
+                            <li><strong>架构:</strong> Hopper (GH100 阉割版)</li>
+                            <li><strong>CUDA 核心:</strong> 11,520</li>
+                            <li><strong>Tensor 核心:</strong> 360 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> <strong>96 GB HBM3</strong></li>
+                            <li><strong>显存带宽:</strong> <strong>4.0 TB/s</strong></li>
+                            <li><strong>FP64 (HPC):</strong> <strong>30 TFLOPS (Dense)</strong></li>
+                            <li><strong>FP32 (HPC):</strong> 60 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> 296 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> 592 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 900 GB/s (NVLink Bridge)</li>
+                            <li><strong>TDP (功耗):</strong> 400W (PCIe 形态)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-l20">NVIDIA L20 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI推理/图形渲染]</strong>。专为推理优化，显存大，功耗低，带光追。</li>
+                            <li><strong>架构:</strong> Ada Lovelace (AD102)</li>
+                            <li><strong>CUDA 核心:</strong> 12,800</li>
+                            <li><strong>Tensor 核心:</strong> 400 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 48 GB GDDR6 (带 ECC)</li>
+                            <li><strong>显存带宽:</strong> 864 GB/s</li>
+                            <li><strong>FP64 (HPC):</strong> <strong>0.97 TFLOPS (Dense, 1/64)</strong> - 不适用HPC</li>
+                            <li><strong>FP32 (HPC):</strong> 62 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> 992 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> 992 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 不支持</li>
+                            <li><strong>TDP (功耗):</strong> 275W (PCIe 形态)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-gpu-5090">GeForce RTX 5090 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI开发/图形]</strong>。新一代 AI 开发者卡皇，带宽和 AI 性能飞跃。</li>
+                            <li><strong>架构:</strong> Blackwell (GB202)</li>
+                            <li><strong>CUDA 核心:</strong> 21,504</li>
+                            <li><strong>Tensor 核心:</strong> (第 5 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 32 GB GDDR7</li>
+                            <li><strong>显存带宽:</strong> <strong>1.8 TB/s</strong></li>
+                            <li><strong>FP64 (HPC):</strong> <strong>~1.7 TFLOPS (Dense, 1/64)</strong> - 不适用HPC</li>
+                            <li><strong>FP32 (HPC):</strong> ~110 TFLOPS (Dense)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> ~1.7 PFLOPS (Sparse, 含 FP8)</li>
+                            <li><strong>NVLink:</strong> 不支持</li>
+                            <li><strong>TDP (功耗):</strong> 550W (消费级)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-4090">GeForce RTX 4090 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI开发/图形]</strong>。上一代 AI 开发性价比之王，QLoRA 微调首选。</li>
+                            <li><strong>架构:</strong> Ada Lovelace (AD102)</li>
+                            <li><strong>CUDA 核心:</strong> 16,384</li>
+                            <li><strong>Tensor 核心:</strong> 512 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 24 GB GDDR6X</li>
+                            <li><strong>显存带宽:</strong> 1008 GB/s</li>
+                            <li><strong>FP64 (HPC):</strong> <strong>1.3 TFLOPS (Dense, 1/64)</strong> - 不适用HPC</li>
+                            <li><strong>FP32 (HPC):</strong> 82.6 TFLOPS (Dense)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> 1,321 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 不支持</li>
+                            <li><strong>TDP (功耗):</strong> 450W (消费级)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+            
+            <section id="section-storage" class="faq-section">
+                <h2>🗄️ (四) 分布式文件系统</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-storage-tiering">HPC 存储为什么要分层？(Home vs Scratch)</h3>
+                        <p>
+                            为了在<strong>成本、可靠性、性能</strong>三者间取得平衡。HPC 存储的“快”和“稳”往往是互斥的。
+                        </p>
+                        <ul>
+                            <li><strong>/home (家目录):</strong>
+                                <ul>
+                                    <li><strong>目标：</strong> <strong>高可靠性、高可用性。</strong> 用于存放用户的源代码、配置文件、重要结果。</li>
+                                    <li><strong>技术：</strong> 通常使用企业级 NFS（如 NetApp）或基于 Ceph/GPFS 的高可用方案。空间相对较小，但有快照和备份。</li>
+                                </ul>
+                            </li>
+                            <li><strong>/scratch (暂存区):</strong>
+                                <ul>
+                                    <li><strong>目标：</strong> <strong>极致性能、超高带宽。</strong> 用于存放计算过程中产生的临时大文件、检查点。</li>
+                                    <li><strong>技术：</strong> 必须使用并行文件系统（如 Lustre, GPFS），追求最高的读写带宽。</li>
+                                    <li><strong>注意：</strong> Scratch 通常<strong>没有备份</strong>，且数据会被<strong>定期清理</strong>（如 30 天未访问自动删除）。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-storage-parallel-nfs">什么是并行文件系统 (Lustre / GPFS)？它和 NFS 有何根本区别？</h3>
+                        <p>
+                            NFS 是<strong>“单点瓶颈”</strong>，所有的数据流都经过一台 NFS 服务器。当 100 个计算节点同时读写时，NFS 服务器会瞬间崩溃。
+                        </p>
+                        <p>
+                            并行文件系统（如 Lustre）是<strong>“分治”</strong>思想。它将数据（文件）和元数据（文件名、权限）分离：
+                        </p>
+                        <ul>
+                            <li><strong>MDS (元数据服务器):</strong> 负责处理“打开文件”、“查看目录”等请求。</li>
+                            <li><strong>OSS (对象存储服务器):</strong> 负责实际的数据读写。一个文件会被切成很多块（Stripe），分散存储在几十个 OSS 上。</li>
+                        </ul>
+                        <p>
+                            当 100 个节点计算时，它们会<strong>同时从几十台 OSS 上拉取数据</strong>，从而获得 <strong>TB/s 级别</strong>的聚合带宽，这是 NFS 无法企及的。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-storage-lustre-details">Lustre 文件系统的核心优势和典型应用场景是什么？</h3>
+                        <p>
+                            Lustre 是开源并行文件系统中的<strong>“带宽之王”</strong>，是全球 Top500 超算中心中占有率最高的存储方案（超过70%）。
+                        </p>
+                        <ul>
+                            <li><strong>核心优势 (Pros):</strong>
+                                <ul>
+                                    <li><strong>极致的聚合带宽：</strong> 其架构（MDS/OSS分离）专为大文件、高吞吐量场景优化，可以轻松扩展至 <strong>TB/s 级别</strong>的读写带宽。</li>
+                                    <li><strong>超高扩展性：</strong> 支持数万个客户端节点同时挂载和高性能访问。</li>
+                                    <li><strong>成熟稳定：</strong> 经过数十年超算中心的严苛验证，是传统 HPC 领域的“事实标准”。</li>
+                                    <li><strong>开源：</strong> 无需商业许可费用（但通常需要专业的、付费的社区版或商业版支持服务）。</li>
+                                </ul>
+                            </li>
+                            <li><strong>典型应用 (Use Cases):</strong>
+                                <ul>
+                                    <li><strong>传统科学计算：</strong> 如气象（WRF）、流体力学（CFD）、CAE 仿真、高能物理、石油勘探等，这些应用需要读写海量的、GB/TB 级别的大文件。</li>
+                                    <li><strong>大规模渲染：</strong> 影视渲染农场，需要为上千个渲染节点提供高速素材读取。</li>
+                                </ul>
+                            </li>
+                            <li><strong>主要考量 (Cons):</strong>
+                                <ul>
+                                    <li><strong>元数据性能：</strong> 传统的 Lustre 架构中，MDS（元数据服务器）相对容易成为瓶颈，尤其是在 AI 训练等涉及数亿个小文件的场景中，表现不如 GPFS。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-storage-gpfs-details">GPFS (IBM Spectrum Scale) 的核心优势和应用场景又是什么？</h3>
+                        <p>
+                            GPFS（现名 IBM Spectrum Scale）是商业并行文件系统中的<strong>“全能冠军”</strong>。它在追求高性能的同时，提供了极其丰富的企业级数据管理功能。
+                        </p>
+                        <ul>
+                            <li><strong>核心优势 (Pros):</strong>
+                                <ul>
+                                    <li><strong>均衡的高性能：</strong> 不仅聚合带宽很高，其<strong>元数据性能（小文件处理）也极其出色</strong>，非常适合混合型工作负载。</li>
+                                    <li><strong>企业级功能：</strong> 提供快照、高可用、异地容灾、自动分层存储 (ILM) 等企业级特性，可靠性极高。</li>
+                                    <li><strong>强大的兼容性：</strong> 优秀的 POSIX 兼容性，并支持 NFS, SMB, S3, HDFS 等多种协议，能统一管理HPC、AI、大数据等多种数据孤岛。</li>
+                                </ul>
+                            </li>
+                            <li><strong>典型应用 (Use Cases):</strong>
+                                <ul>
+                                    <li><strong>人工智能 (AI) / 机器学习：</strong> AI 训练（如 CV, NLP）涉及海量小文件（图片、文本），这对元数据性能要求极高，GPFS 在此场景优势明显。</li>
+                                    <li><strong>混合负载：</strong> 同时需要高性能计算和企业级数据管理（如银行、电信、自动驾驶）。</li>
+                                    <li><strong>生物信息：</strong> 基因测序产生大量小文件和海量数据，GPFS 都能很好地处理。</li>
+                                </ul>
+                            </li>
+                            <li><strong>主要考量 (Cons):</strong>
+                                <ul>
+                                    <li><strong>商业软件：</strong> 涉及 IBM 的商业许可（License）费用，总体成本（TCO）通常高于开源 Lustre 方案。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-storage-iozone">什么是 IOZONE 基准测试？</h3>
+                        <p>
+                            IOZONE 是一款功能全面的文件系统基准测试工具，在 HPC 领域被广泛用于存储验收。
+                        </p>
+                        <ul>
+                            <li><strong>核心目的：</strong> 它不是测量单一指标，而是全方位地“体检”文件系统在不同负载下的表现。</li>
+                            <li><strong>测试范围：</strong> 包括顺序读/写、随机读/写、再次读/写 (Re-read/Re-write)、跨步读 (Stride Read) 等。</li>
+                            <li><strong>售前价值：</strong> 客户常使用 IOZONE 来模拟其真实应用场景。例如，一个应用可能是“8 进程并行写 1GB 大文件”，另一个可能是“128 进程并行读 1KB 小文件”。IOZONE 可以模拟这些场景，输出详细的性能报告 (MB/s)，用于存储性能验收。</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+            
+            <section id="section-network" class="faq-section">
+                <h2>🌐 (五) 互联网络</h2>
+                <div class="faq-item-container">
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-ib-gen">如何快速理清 IB 各代次的交换机、网卡和线缆？</h3>
+                        <p>
+                            学习 InfiniBand (IB) 产品知识，首先要明确匹配的<strong>代次 (Generation)</strong>。代次主要取决于速率，例如 SDR (10Gb/s), DDR (20Gb/s), QDR (40Gb/s), FDR (56Gb/s), EDR (100Gb/s), HDR (200Gb/s), 和 NDR (400Gb/s)。
+                        </p>
+                        <p>
+                            确定代次后，再分别从三个方面去学习：
+                        </p>
+                        <ul>
+                            <li><strong>① 交换机：</strong> 关注其名称、速率、端口数和端口类型。</li>
+                            <li><strong>② 光模块与线缆：</strong> 必须与交换机和网卡的代次及端口匹配。</li>
+                            <li><strong>③ 网卡 (HCA)：</strong> 同样需要匹配代次速率。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-ndr-800g">为什么NDR交换机(如QM9790)标称64x400G，但光模块却是800G的？</h3>
+                        <p>
+                            这是一个常见的混淆。NVIDIA Quantum-2 交换机（如 QM9700 和 QM9790）确实提供 64 个 400Gb/s 的 InfiniBand 端口。
+                        </p>
+                        <ul>
+                            <li><strong>物理接口：</strong> 交换机面板上实际只有 **32 个物理 OSFP 笼式接口**。</li>
+                            <li><strong>端口密度：</strong> 每个 OSFP 物理接口**包含 2 个独立的 NDR (400G) 端口**。</li>
+                            <li><strong>光模块：</strong> 因此，您需要插入 32 个 <strong>800G</strong> 的光模块。</li>
+                            <li><strong>线缆：</strong> 每个 800G 光模块再通过 MPO 线缆“一分二”，连接到两个 400Gb/s 的设备（例如两张 400G 网卡）。</li>
+                        </ul>
+                        <p>
+                            <strong>结论：</strong> 32 个 800G 的物理端口，通过光模块和线缆拆分，最终实现了 64 个 400G 的端口能力。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-no-redundancy">为什么IB网络不需要冗余？网卡也通常是单口的？</h3>
+                        <p>
+                            这是HPC/AI网络设计的核心理念，也是被数千个超算中心采纳的业界最佳实践。IB网络的设计目标是成为“赛车”（追求极致性能），而不是“装甲车”（追求极致可靠）。
+                        </p>
+                        <ul>
+                            <li><strong>性能优先：</strong> HPC 和 AI 训练的核心任务是高效传输数据（数据平面）。IB 网卡不支持端口链路聚合。为单个节点提供一条独占的高带宽链路（如 400G NDR）通常已经足够。</li>
+                            <li><strong>成本极高：</strong> IB 交换机和线缆价格昂贵，可能高达几十万甚至上百万。配置冗余（如双交换机、双口网卡）会导致成本翻倍，而且双口网卡会占用更多交换机端口，性价比很低。</li>
+                            <li><strong>运维简化：</strong> 单口网卡强制形成清晰的拓扑（所有节点连到中央交换机），极大简化了网络管理、故障诊断和性能分析。</li>
+                            <li><strong>业务容忍度：</strong> HPC 和 AI 业务（科研场景）对可靠性要求不像生产系统（如云场景）那么极端。计算任务中途掉一个节点，其影响通常是可控的。</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-managed-switch">带管理(如QM9700)和不带管理(如QM9790)的IB交换机有什么区别？我该怎么选？</h3>
+                        <p>
+                            <strong>结论：从成本角度考虑，一般全部配不带管理的交换机（如 QM8790, QM9790）即可</strong>。
+                        </p>
+                        <ul>
+                            <li><strong>硬件差异：</strong> 带管理的交换机（如 QM9700）左上角会多一个 RJ45 串口和 MGT 千兆电口。它还内置了 CPU（如 Intel Core i3）用于运行 MLNX-OS 管理软件包。</li>
+                            <li><strong>功能差异：</strong> 带管理交换机内置了 **SM (Subnet Manager，子网管理器)**。这使其能提供设备自动发现、Fabric 可视化、智能分析、健康监测等完备的管理和监控能力。</li>
+                            <li><strong>成本差异：</strong> 带管理的交换机价格贵 2 万 5 左右。</li>
+                            <li><strong>替代方案：</strong> 交换机不带 SM 功能，**可以将 SM 配置在集群的管理服务器上**，所以对集群运行影响不大。</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-sm">什么是子网管理器 (Subnet Manager, SM)？</h3>
+                        <p>
+                            SM 是在 IB 网络中运行的集中式实体。它负责将网络的流量配置（如路由、QoS、分区）应用到所有设备。
+                        </p>
+                        <ul>
+                            <li><strong>部署位置：</strong> 每个 IB 网络都需要一个 SM。SM 可以运行在带管理的交换机内部（基于系统），也可以运行在连接到网络的管理节点或计算节点上。</li>
+                            <li><strong>高可用(HA)建议：</strong> 如果交换机本身不作为 SM，建议在网络中**至少两台服务器上启动 SM**，作为主备，以确保网络的健壮性和可靠性。</li>
+                            <li><strong>规模限制：</strong> 单个 SM 最多支持 2048 个节点。如果 Fabric 超过此规模，则需要购买 Mellanox UFM 软件包。</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-compatibility">IB 网卡和交换机可以跨代次兼容吗？（如 HDR 网卡配 NDR 交换机）</h3>
+                        <p>
+                            <strong>可以，但有条件。</strong> IB 支持向后兼容，但需要注意端口类型和正确的线缆。
+                        </p>
+                        <ul>
+                            <li><strong>HDR 网卡 (CX6, 200G) -> NDR 交换机 (Quantum-2):</strong> **可以**。需要使用 OSFP to 2xQSFP56 的 AOC/DAC 线缆（一分二线缆）。</li>
+                            <li><strong>NDR 网卡 (CX7, 400G) -> HDR 交换机 (Quantum):</strong> **不行**（如果网卡是 OSFP 端口）。但如果 NDR 网卡是 QSFP112 端口（如 MCX75310A-GCAT），则**可以**连接到 HDR 交换机，此时降速为 200G HDR 运行。</li>
+                            <li><strong>NDR 交换机 -> HDR 交换机 (Switch-to-Switch):</strong> **可以**。Quantum-2 交换机 (NDR) 可以通过 OSFP to 2xQSFP56 线缆连接到 Quantum 交换机 (HDR)，此时链路速率降为 2x HDR (200G)。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-connectors">400G时代的光模块接口 (OSFP, QSFP-DD, QSFP112) 有什么区别？</h3>
+                        <p>
+                            在 400G 代次，InfiniBand (IB) 主流选择了 **OSFP** 封装，而 RoCE (以太网) 厂家则多沿用 **QSFP-DD** 路线，导致了兼容性问题。
+                        </p>
+                        <div class="faq-item-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>特性</th>
+                                        <th>QSFP-DD</th>
+                                        <th>OSFP</th>
+                                        <th>QSFP112</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>电口调制</td>
+                                        <td>8路 50G PAM4</td>
+                                        <td>8路 50G PAM4 或 4路 100G PAM4</td>
+                                        <td>4路 100G PAM4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>尺寸兼容性</td>
+                                        <td>与 QSFP28/QSFP56 <strong>兼容</strong></td>
+                                        <td>与 QSFP 系列 <strong>不兼容</strong>（尺寸略大）</td>
+                                        <td>与 QSFP28/QSFP56 <strong>兼容</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>散热/功耗</td>
+                                        <td>功耗较高</td>
+                                        <td><strong>功耗低</strong>（因集成了散热器，散热性能好）</td>
+                                        <td>功G耗较高</td>
+                                    </tr>
+                                    <tr>
+                                        <td>典型应用</td>
+                                        <td>400G 以太网 (RoCE)</td>
+                                        <td>400G/800G InfiniBand (NDR)</td>
+                                        <td>400G 以太网 / 400G IB (CX7 网卡)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-osfp-qsfpdd">OSFP 和 QSFP-DD 物理封装的光模块可以互通吗？</h3>
+                        <p>
+                            <strong>可以，前提是链路两端的以太网媒体类型相同</strong>。
+                        </p>
+                        <p>
+                            OSFP 和 QSFP-DD 描述的只是光模块的**物理尺寸 (Form Factor)**，它们彼此不兼容插拔。但是，如果您在 400G 链路的一端使用 OSFP 模块，另一端使用 QSFP-DD 模块，只要它们的光学标准相同（例如，两端都是 <code>400G-DR4</code> 或 <code>400G-FR4</code>），它们就可以互相兼容通信。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-net-roce-mode">IB 网卡如何切换到 RoCE 模式？</h3>
+                        <p>
+                            首先要看 IB 网卡是否支持（例如 MCX653105A-ECAT 支持 HDR100/EDR）。在安装好 IB 网卡驱动后，执行相应的命令切换网口模式即可。
+                        </p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-naming">光模块上的 400G SR4, SR8, DR4, FR8... 这些命名是什么意思？</h3>
+                        <p>
+                            这是光模块的标准命名法，<code>xxxGBase-mRy.z</code>，它定义了速率、距离、光纤对数和波长数量。
+                        </p>
+                        <ul>
+                            <li><strong>m (距离/介质):</strong>
+                                <ul>
+                                    <li><strong>S (Short):</strong> 短距 (如 100m)，使用多模光纤。</li>
+                                    <li><strong>D (Data Center):</strong> 数据中心 (如 500m)，使用并行单模光纤。</li>
+                                    <li><strong>F (Far):</strong> 2km，通常是 CWDM 单模。</li>
+                                    <li><strong>L (Long):</strong> 长距 (如 10km)，使用单模光纤。</li>
+                                    <li><strong>E (Extended):</strong> 延长距离 (如 40km)。</li>
+                                    <li><strong>Z (ZR):</strong> 超长距 (如 80km)。</li>
+                                </ul>
+                            </li>
+                            <li><strong>R (Encoding):</strong> 通常指 R。</li>
+                            <li><strong>y (通道数):</strong> 字母 R 后面的数字表示并行光纤或 WDM 通道的数量。
+                                <ul>
+                                    <li><strong>DR4:</strong> 4 个并行通道，每个 100G (4x100G)。</li>
+                                    <li><strong>SR8 / FR8 / LR8:</strong> 8 个并行通道，每个 50G (8x50G)。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>以 400G SR4 和 400G SR8 为例对比：</strong>
+                        </p>
+                        <div class="faq-item-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>特性</th>
+                                        <th>400G SR4</th>
+                                        <th>400G SR8</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>通道配置</td>
+                                        <td>4 个并行通道，每通道 100Gbps</td>
+                                        <td>8 个并行通道，每通道 50Gbps</td>
+                                    </tr>
+                                    <tr>
+                                        <td>所需光纤芯数</td>
+                                        <td>8 芯 (4 发 4 收)</td>
+                                        <td>16 芯 (8 发 8 收)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>接口类型</td>
+                                        <td>MPO-12 (使用8芯)</td>
+                                        <td>MPO-16 (使用16芯)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>优势</td>
+                                        <td>基础设施简单（光纤少），具成本效益</td>
+                                        <td>功耗和散热较低，通道粒度更细</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-latency-test">如何测试网络延时 (Latency)？</h3>
+                        <p>
+                            网络延时是指数据包从 A 点到 B 点所需的时间（单位：微秒 μs），<strong>延时是 HPC 网络（尤其是 IB）比带宽更核心的指标</strong>。
+                        </p>
+                        <ul>
+                            <li><strong>测试工具：</strong> 通常使用 Ping-Pong 测试法。
+                                <ul>
+                                    <li><strong>InfiniBand:</strong> 使用 <code>ib_send_lat</code>（来自 <code>perftest</code> 包）。</li>
+                                    <li><strong>通用 MPI:</strong> 使用 OSU Benchmarks 中的 <code>osu_latency</code>。</li>
+                                </ul>
+                            </li>
+                            <li><strong>测试方法：</strong> 在两台服务器上运行测试，程序会测量一个 0 字节消息的“往返时间 (RTT)”，再除以 2，得到单向延时。</li>
+                            <li><strong>售前价值：</strong> 客户验收的核心指标。现代 NDR InfiniBand 延时应在 <strong>~1.3 μs</strong> 左右。低延时对于 VASP, WRF, LS-DYNA 等强 MPI 通信应用至关重要。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 id="q-net-nccl-test">什么是 NCCL 基准测试？它为什么对 AI 如此重要？</h3>
+                        <p>
+                            NCCL (NVIDIA Collective Communications Library) 是 NVIDIA 官方的 GPU 间通信库，是 AI 分布式训练的“神经网络”。
+                        </p>
+                        <p>
+                            <strong>NCCL 测试 (nccl-tests)</strong> 是一个基准测试工具，用于测量 GPU 之间（包括卡间 NVLink 和节点间 IB/RoCE）的集合通信性能。
+                        </p>
+                        <ul>
+                            <li><strong>核心目的：</strong> 专门测量 AI 训练中最重要的 <code>AllReduce</code>, <code>AllGather</code>, <code>Broadcast</code> 等操作的<strong>有效带宽</strong>。</li>
+                            <li><strong>关键指标：</strong> <code>all_reduce_perf</code> 的性能。这个值直接决定了多机多卡训练的扩展效率（Scaling Efficiency）。</li>
+                            <li><strong>售前价值：</strong> 验收 AI 集群的“黄金标准”。一个配置良好的 8 卡 H100 节点，其跨节点 <code>AllReduce</code> 带宽应接近网络物理带宽（如 400G IB）。</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="section-job" class="faq-section">
+                <h2>📊 (六) 作业管理系统</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-job-slurm">什么是作业调度系统 (如 Slurm)？为什么我必须用它？</h3>
+                        <p>
+                            调度系统是集群的<strong>“交通警察”</strong>和<strong>“资源管家”</strong>。HPC 集群是共享资源，没有调度系统会立即陷入混乱。
+                        </p>
+                        <ul>
+                            <li><strong>避免资源冲突：</strong> 防止 2 个用户同时在 1 台服务器上运行占满内存的任务，导致系统崩溃。</li>
+                            <li><strong>确保资源公平 (队列):</strong> 通过队列（Partition）和优先级（Priority）机制，确保不同课题组、不同重要性的任务（如紧急项目 vs 学生练习）都能合理分配到资源。</li>
+                            <li><strong>最大化利用率：</strong> 调度系统会自动寻找空闲的节点运行排队的任务，确保您投资的昂贵硬件（特别是 GPU）24x7 都在工作，实现 ROI 最大化。</li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-job-queue">什么是“队列/分区 (Queue/Partition)”？</h3>
+                        <p>
+                            队列是调度系统里对<strong>“资源池”</strong>的逻辑划分。您可以根据策略定义不同的队列，例如：
+                        </p>
+                        <ul>
+                            <li><code>cpu_queue</code>: 包含所有 CPU 计算节点，限制每个用户最多使用 1000 核。</li>
+                            <li><code>gpu_queue</code>: 包含所有 GPU 节点，限制每个作业最多使用 8 卡。</li>
+                            <li><code>debug_queue</code>: 包含几台节点，限制作业最长只能跑 30 分钟，供用户测试。</li>
+                            <li><code>high_prio</code>: 包含部分资源，仅供 VIP 项目使用，优先级最高。</li>
+                        </ul>
+                        <p>
+                            用户通过向特定队列提交作业（例如 <code>sbatch -p gpu_queue my_job.sh</code>）来申请特定类型的资源。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-cluster" class="faq-section">
+                <h2>🖥️ (七) 集群管理系统</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-cluster-slurm-mgmt">作业调度 (Slurm) 和集群管理 (如 Bright) 有什么区别？</h3>
+                        <p>
+                            这是一个常见的混淆。如果把集群比作一个“车队”：
+                        </p>
+                        <ul>
+                            <li><strong>集群管理系统 (运维 O&M):</strong> 负责“造车”和“修车”。它是一个<strong>运维平台</strong>，负责自动化地为上百个节点安装操作系统（裸金属部署）、配置软件、监控硬件（温度、风扇）、并在节点宕机时发出告警。</li>
+                            <li><strong>作业调度系统 (运营 Ops):</strong> 			负责“派单”和“调度”。它是一个<strong>运营平台</strong>，负责管理用户提交的任务，决定哪个任务（乘客）上哪台服务器（空车）。</li>
+                        </ul>
+                        <p>
+                            两者协同工作，但功能完全不同。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-cluster-diskless">什么是HPC 集群的“无盘”或“镜像”部署？</h3>
+                        <p>
+                            指计算节点本身<strong>没有硬盘</strong>（或硬盘不装系统），它们的操作系统镜像是通过网络从管理节点动态加载到内存中运行的。
+                        </p>
+                        <ul>
+                            <li><strong>优势：</strong> <strong>极高的运维效率和一致性。</strong> 当您需要为 500 个节点升级一个驱动时，您不需要一台台去装。您只需在管理节点上修改“黄金镜像”，然后重启所有计算节点，它们就会自动加载新系统。</li>
+                            <li><strong>实现：</strong> 通常使用 <code>PXE</code> + <code>iPXE</code> + <code>NFS-root</code> 或 <code>Warewulf</code> / <code>xCAT</code> 等技术实现。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-libs" class="faq-section">
+                <h2>📚 (八) 库、编译器与工具</h2>
+                <div class="faq-item-container">
+                    
+                    <!-- 基础概念 -->
+                    <div class="faq-item">
+                        <h3 id="q-libs-mpi">什么是 MPI (Message Passing Interface)？</h3>
+                        <p>
+                            MPI 是 HPC 的<strong>“通信标准”</strong>。如果您的程序需要<strong>跨越多台服务器</strong>协同计算，就需要 MPI。
+                        </p>
+                        <p>
+                            MPI 是一套函数库（如 <code>MPI_Send</code>, <code>MPI_Recv</code>, <code>MPI_Bcast</code>），允许一个程序的多个进程（分布在不同机器上）互相发送和接收数据。
+                        </p>
+                        <p>
+                            <strong>关键点：</strong> MPI 库（如 OpenMPI, Intel MPI）必须和底层的高速网络 (InfiniBand) 紧密配合，才能实现低延迟的 RDMA 通信。配置不当的 MPI 会让 IB 网卡降级为以太网性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-libs-math">什么是 MKL, cuBLAS 这类数学库？它们为什么重要？</h3>
+                        <p>
+                            它们是<strong>“官方外挂”</strong>，是 CPU/GPU 厂商（Intel, NVIDIA）提供的、针对自家硬件<strong>指令集深度优化</strong>的数学函数库。
+                        </p>
+                        <p>
+                            科学计算 90% 的时间都在做基础数学运算（如矩阵乘法 BLAS、快速傅里叶变换 FFT、解线性方程 LAPACK）。
+                        </p>
+                        <ul>
+                            <li><strong>Intel MKL:</strong> 针对 Intel Xeon CPU 优化，自动利用 AVX-512 等高级指令集。</li>
+                            <li><strong>NVIDIA cuBLAS/cuFFT:</strong> 针对 NVIDIA GPU 优化，运行在 Tensor Cores 或 CUDA Cores 上。</li>
+                        </ul>
+                        <p>
+                            <strong>售前价值：</strong> 同样一份代码，链接 MKL 库运行，可能比链接普通开源库<strong>快 2 到 10 倍</strong>。我们交付的集群会确保您的应用（如 MATLAB, PyTorch, GROMACS）都编译链接了最优的数学库。
+                        </p>
+                    </div>
+
+                    <!-- 编译器 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-gcc">什么是 GNU 编译器 (GCC)？</h3>
+                        <p>
+                            GCC (GNU Compiler Collection) 是 HPC 领域<strong>兼容性最好、应用最广</strong>的开源编译器套件。它包含 C (<code>gcc</code>), C++ (<code>g++</code>) 和 Fortran (<code>gfortran</code>) 编译器。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是所有HPC集群的“标配”和“基准线”。几乎所有开源科学软件都依赖它进行编译。我们平台提供多个版本的 GCC，以确保对所有软件的最佳兼容性。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-intel-compiler">什么是 Intel 编译器 (oneAPI)？</h3>
+                        <p>
+                            Intel 编译器 (<code>icx</code>, <code>ifx</code>, <code>icpc</code>, <code>ifort</code>) 是 Intel oneAPI 套件的一部分，是专为 Intel CPU 平台打造的<strong>高性能商业编译器</strong>。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 对于在 Intel Xeon 处理器上运行的HPC应用（特别是Fortran代码），使用 Intel 编译器编译通常会带来 <strong>10-30% 的性能提升</strong>，因为它能更好地利用 AVX-512 等高级指令集并与 MKL 库深度集成。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-nvidia-hpc-sdk">什么是 NVIDIA HPC SDK？</h3>
+                        <p>
+                            NVIDIA HPC SDK 是一套专为 GPU 加速的 HPC 应用设计的编译器、库和工具。它包含 <code>nvc</code>, <code>nvc++</code>, 和 <code>nvfortran</code> 编译器。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是 NVIDIA GPU 平台上的“官方编译器”。它对 OpenACC, OpenMP offload 以及 CUDA C++/Fortran 提供了最强支持，是开发和运行 GROMACS, NAMD, WRF 等 GPU 加速应用的首选工具链。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-bisheng">什么是毕昇编译器 (bisheng)？</h3>
+                        <p>
+                            毕昇编译器 (bisheng) 是华为推出的高性能编译器，基于开源 LLVM 架构，并针对华为鲲鹏 (Kunpeng) ARM 处理器进行了深度优化。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 如果您的 HPC 平台采用鲲鹏等 ARM 架构 CPU，使用毕昇编译器是发挥硬件最大性能的关键。它通过优化指令生成和利用 ARM 架构特性，确保计算密集型应用获得最佳性能。
+                        </p>
+                    </div>
+
+                    <!-- CPU 数学库 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-mkl">什么是 Intel MKL？</h3>
+                        <p>
+                            Intel Math Kernel Library (MKL) 是 Intel 提供的<strong>业界最快</strong>的 CPU 数学库。它提供了高度优化的 BLAS (矩阵运算), LAPACK (线性代数), FFT (傅里叶变换) 等核心函数。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是 PyTorch, MATLAB, Ansys 等众多上层应用的“性能心脏”。在 Intel 平台上，确保应用链接到 MKL 是性能优化的第一步，提升效果立竿见影。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-openblas">什么是 OpenBLAS？</h3>
+                        <p>
+                            OpenBLAS 是一个开源的高性能 BLAS 和 LAPACK 库，是 MKL 的主要开源替代品。它针对多种 CPU 架构（Intel, AMD, ARM）都进行了优化。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 对于非 Intel 平台（如 AMD EPYC），OpenBLAS 是实现高性能数学计算的首选。在编译 Python (NumPy/SciPy) 或 R 时，链接 OpenBLAS 能带来数倍的性能提升。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-eigen">什么是 Eigen？</h3>
+                        <p>
+                            Eigen 是一个高性能的 C++ 模板库，专为线性代数（矩阵、向量）设计。它被广泛应用于机器学习（如 TensorFlow 内部）、计算机视觉和机器人学。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Eigen 的优势在于其灵活性和编译期优化。我们的平台提供 Eigen 库，以支持依赖它的上层应用（如 TensorFlow）和自研 C++ 代码的编译。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-armadillo">什么是 Armadillo？</h3>
+                        <p>
+                            Armadillo 是一个基于 Eigen 的 C++ 线性代数库，提供了类似 MATLAB/Octave 的易用 API。它旨在平衡高性能与易用性。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 帮助习惯了 MATLAB 语法的科研人员快速将算法原型迁移到高性能 C++ 环境中，同时底层享受 Eigen 和 MKL/OpenBLAS 带来的高性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-fftw">什么是 FFTW？</h3>
+                        <p>
+                            FFTW (Fastest Fourier Transform in the West) 是一个 C 语言库，用于计算离散傅里叶变换 (DFT)。它是公认的<strong>最快、最灵活</strong>的开源 FFT 实现方案。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 几乎所有涉及信号处理、分子动力学（如 GROMACS, LAMMPS）、流体力学的应用都依赖 FFTW。我们平台会预编译针对 CPU 指令集（如 AVX-512）和 MPI 优化的 FFTW 版本。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-gsl">什么是 GSL (GNU Scientific Library)？</h3>
+                        <p>
+                            GSL (GNU Scientific Library) 是一个面向 C/C++ 的大型开源数值计算库。它提供了广泛的数学例程，如随机数生成、特殊函数、数值积分、优化等。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> GSL 是许多开源科学软件（特别是在物理和生物领域）的基础依赖库。平台提供 GSL 支持，确保这些软件的顺利编译和运行。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-spooles">什么是 SPOOLES？</h3>
+                        <p>
+                            SPOOLES (SParse Object-Oriented Linear Equations Solver) 是一个用于求解大规模稀疏线性方程组的 C 库。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是某些特定领域（如结构力学、电磁仿真）求解器的核心依赖。提供此库是为了确保这些专业应用的兼容性。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-dealii">什么是 Deal.II？</h3>
+                        <p>
+                            Deal.II 是一个强大的 C++ 软件包，专注于有限元方法 (FEM) 的数值求解。它提供了自适应网格加密 (AMR) 和并行计算（支持 MPI）等高级功能。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们的平台支持 Deal.II，使研究人员能够开发和运行复杂的多物理场仿真程序，解决复杂的偏微分方程问题。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-hypre">什么是 Hypre？</h3>
+                        <p>
+                            Hypre 是一个高性能的并行线性求解器库，专为大规模、结构化和非结构化网格上的线性系统而设计。它特别擅长多重网格 (Multigrid) 算法。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Hypre 是许多大型并行应用（如 OpenFOAM 和其他 CAE 软件）的底层求解器。我们提供针对 IB 网络优化的 Hypre，以加速这些应用的核心计算阶段。
+                        </p>
+                    </div>
+
+                    <!-- MPI 实现 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-intel-mpi">什么是 Intel-MPI？</h3>
+                        <p>
+                            Intel MPI 是 Intel oneAPI 套件中提供的 MPI 实现。它专为 Intel 平台优化，并能与 Intel 编译器和 Vtune 性能分析器无缝集成。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 在全 Intel 平台（CPU, 网卡）上，Intel MPI 通常能提供最佳的通信性能和最低的延迟。它是运行 VASP, Ansys 等商业软件时官方推荐的 MPI 之一。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-openmpi">什么是 OpenMPI？</h3>
+                        <p>
+                            OpenMPI 是一个开源、高性能、功能丰富的 MPI 实现。它具有出色的可移植性，支持几乎所有的HPC平台和互联网络（InfiniBand, RoCE, SGI 等）。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> OpenMPI 是HPC集群的“标配”MPI，兼容性极佳。它是 GROMACS, OpenFOAM 等众多开源软件首选的 MPI 库。我们提供针对 InfiniBand 优化的 OpenMPI 版本。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-hyper-mpi">什么是 Hyper-MPI？</h3>
+                        <p>
+                            Hyper-MPI 是华为推出的高性能 MPI 库，专为鲲鹏 ARM 平台优化。它旨在充分利用 ARM 架构的特性，降低跨节点通信延迟。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 在基于鲲鹏的 HPC 平台上，使用 Hyper-MPI 替代 OpenMPI，可以显著提升大规模并行应用的通信效率和总体扩展性。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-mpi4py">什么是 Mpi4py？</h3>
+                        <p>
+                            Mpi4py 是 Python 的 MPI 绑定库。它允许 Python 程序员直接调用底层的 C-MPI 库（如 OpenMPI 或 Intel MPI）来实现跨节点并行计算。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 极大地降低了HPC并行的门槛。科研人员无需编写 C++/Fortran，在 Python 中即可实现大规模数据并行和模型并行，是 AI 和数据科学领域（如 Dask, DeepSpeed）的重要基础。
+                        </p>
+                    </div>
+
+                    <!-- GPU & CUDA 库 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-cuda">什么是 NVIDIA CUDA Toolkit？</h3>
+                        <p>
+                            CUDA (Compute Unified Device Architecture) 是 NVIDIA 推出的并行计算平台和编程模型。CUDA Toolkit 则是包含编译器 (<code>nvcc</code>)、核心库和开发工具的软件包。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> <strong>它是运行所有 NVIDIA GPU 加速应用的基础。</strong> 我们的平台会预装多个 CUDA Toolkit 版本，并通过 "Environment Modules" 供用户按需加载，以匹配 PyTorch, TensorFlow, GROMACS 等不同应用对 CUDA 版本的要求。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cudnn">什么是 cuDNN？</h3>
+                        <p>
+                            NVIDIA CUDA Deep Neural Network library (cuDNN) 是一个专为深度学习（神经网络）优化的 GPU 加速库。它提供了高度优化的卷积、池化、归一化等标准操作。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> PyTorch 和 TensorFlow 等 AI 框架依赖 cuDNN 来实现其高性能。我们确保集群上的 cuDNN 版本与 CUDA 和 AI 框架版本完美匹配，以发挥 GPU 的最大 AI 性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cublas">什么是 cuBLAS？</h3>
+                        <p>
+                            cuBLAS (CUDA Basic Linear Algebra Subroutines) 是 NVIDIA 官方的 BLAS 库的 GPU 实现。它提供了在 GPU 上执行高性能矩阵和向量运算（如矩阵乘法）的接口。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是 GPU 加速的“MKL”。任何在 GPU 上涉及大规模矩阵运算的应用（包括 AI 训练）都严重依赖 cuBLAS 来获得高性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cusparse">什么是 cuSPARSE？</h3>
+                        <p>
+                            cuSPARSE (CUDA Sparse Matrix library) 是NVIDIA 提供的 GPU 加速稀疏矩阵运算库。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 在许多科学计算（如有限元分析、计算流体力学）和图计算中，涉及的都是稀疏矩阵。cuSPARSE 库能利用 GPU 高效处理这些运算，极大加速求解过程。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cusolver">什么是 cuSOLVER？</h3>
+                        <p>
+                            cuSOLVER (CUDA Solver library) 是NVIDIA 提供的 GPU 加速线性代数库，专注于稠密和稀疏线性系统求解器以及特征值问题。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是 LAPACK 库的 GPU 版本，为HPC应用提供了在 GPU 上求解复杂线性方程组和执行矩阵分解（如 QR, LU, Cholesky）的能力。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cufft">什么是 cuFFT？</h3>
+                        <p>
+                            cuFFT (CUDA Fast Fourier Transform library) 是 NVIDIA 提供的 GPU 加速傅里叶变换库。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 它是 FFTW 的 GPU 版本。对于信号处理、分子动力学等应用，cuFFT 能将 FFT 这一计算瓶颈转移到 GPU 上，实现数量级的性能提升。
+                        </p>
+                    </div>
+                    
+                    <!-- Python 生态 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-pycuda">什么是 PyCUDA？</h3>
+                        <p>
+                            PyCUDA 是一个 Python 模块，允许用户从 Python 中直接访问 NVIDIA CUDA API。用户可以直接在 Python 代码中编写和执行 <code>.cu</code> (CUDA C) 内核。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 为 Python 开发者提供了极致的灵活性。当 Numba 或 Cupy 无法满足特定的底层优化需求时，PyCUDA 允许专家用户“手写”CUDA 内核，实现极限性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cupy">什么是 Cupy？</h3>
+                        <p>
+                            Cupy 是一个开源库，提供了与 NumPy 和 SciPy 兼容的 GPU 加速数组计算。它允许用户仅通过修改 <code>import</code> 语句（<code>import cupy as cp</code>）就将现有的 NumPy 代码迁移到 GPU 上运行。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 极大地降低了 GPU 编程门槛。科研人员无需学习 CUDA，即可在 Python 中利用 GPU 加速其数据分析和科学计算代码。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-numba">什么是 Numba？</h3>
+                        <p>
+                            Numba 是一个 Python 的 JIT (Just-in-Time) 编译器。它通过一个简单的装饰器 (<code>@jit</code>) 将 Python 和 NumPy 代码即时编译为高效的本地机器码（CPU）或 CUDA 内核（GPU）。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 完美解决了 Python 的性能瓶颈。用户无需离开 Python 环境，只需添加装饰器，就能将代码中（如 <code>for</code> 循环）的计算热点加速数十倍。
+                        </p>
+                    </div>
+
+                    <!-- 环境与工具 -->
+                    <div class="faq-item">
+                        <h3 id="q-lib-python">什么是 Python？</h3>
+                        <p>
+                            Python 是当今科学计算和 AI 领域使用最广泛的编程语言。凭借其简洁的语法和庞大的生态（NumPy, SciPy, Pandas, PyTorch），它已成为HPC的“入口”语言。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们平台提供完备的 Python 环境支持，包括多版本 Python 解释器、Conda 环境管理、以及针对 MKL 和 InfiniBand 优化的 Python 科学计算栈。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-perl">什么是 PERL？</h3>
+                        <p>
+                            PERL 是一种经典的脚本语言，以其强大的正则表达式和文本处理能力而闻名。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 在生物信息学（Bioinformatics）领域，PERL 仍然是许多传统数据处理流程（Pipeline）和脚本的核心。我们平台提供 PERL 支持，以确保这些重要脚本的兼容运行。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-r">什么是 R 语言？</h3>
+                        <p>
+                            R 是一种专为统计分析、数据可视化和数据挖掘而设计的编程语言和环境。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> R 是统计学和生物信息学（如 Bioconductor）领域的“事实标准”。我们提供 R 环境，并确保其链接到高性能 BLAS 库（如 MKL/OpenBLAS），使其在HPC集群上也能高效处理大规模统计计算。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-jdk">什么是 JDK (Java Development Kit)？</h3>
+                        <p>
+                            JDK 是开发和运行 Java 应用程序所需的核心软件包，包含了 Java 虚拟机 (JVM) 和编译器。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 一些企业级应用和大数据工具（如 Spark, GATK 的部分工具）依赖 Java 环境。我们提供 JDK 支持以确保这些应用的兼容性。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-conda">什么是 Conda？</h3>
+                        <p>
+                            Conda 是一个跨平台的开源软件包和环境管理器。它使用户（特别是 Python 和 R 用户）能够轻松创建、管理和切换隔离的软件环境，自动解决复杂的依赖关系。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Conda 极大地赋权了HPC用户。用户不再需要等待管理员安装软件，可以在自己的家目录下使用 Conda 自由安装所需版本的 PyTorch, TensorFlow 等工具，极大提升了科研灵活性。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-singularity">什么是 Singularity / Apptainer？</h3>
+                        <p>
+                            Singularity (现名 Apptainer) 是专为 HPC 设计的容器技术。它允许用户将复杂的软件环境（包括操作系统、库、应用）打包成一个单一的镜像文件。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> <strong>解决了“可复现性”的终极难题。</strong> 它安全（无需 root）、高性能（直接调用 IB 和 GPU），允许用户将本地测试好的 Docker 镜像转为 Singularity 镜像，在集群上一键运行，确保结果 100% 一致。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-cmake">什么是 CMake？</h3>
+                        <p>
+                            CMake 是一个跨平台的构建系统生成工具。它使用简单的配置文件 (<code>CMakeLists.txt</code>) 来自动生成标准 Makefile，从而管理 C/C++ 项目的编译过程。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 现代 C++ 科学软件（如 OpenFOAM, Deal.II）几乎都使用 CMake 作为构建系统。我们平台提供 CMake，是编译安装这些大型软件的基础。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-texlive">什么是 TeX Live？</h3>
+                        <p>
+                            TeX Live 是一个全面、跨平台的 TeX/LaTeX 发行版。LaTeX 是科研领域撰写学术论文和报告的标准排版系统。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 在登录节点上提供 TeX Live 环境，允许用户在集群上直接撰写和编译论文，方便地将计算生成的数据和图表插入报告中。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-glibc">什么是 glibc (GNU C Library)？</h3>
+                        <p>
+                            glibc 是 Linux 系统上 C 语言标准库的核心实现。它提供了 <code>printf</code>, <code>malloc</code>, <code>open</code> 等所有基础系统调用和函数。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 预编译的商业软件（如 Ansys, MATLAB）都依赖特定版本的 glibc。我们确保集群操作系统的 glibc 版本具有广泛的兼容性，以避免“GLIBC_X.XX not found”的常见错误。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-vtune">什么是 Intel Vtune Profiler？</h3>
+                        <p>
+                            Intel Vtune Profiler 是一款功能强大的性能分析工具。它能深入分析应用的 CPU、内存和并行瓶颈，帮助开发者找到代码热点。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 为用户提供 Vtune，是我们高级应用支持服务的一部分。我们的专家可以使用 Vtune 对用户的代码进行“体检”，找出性能瓶颈并提供优化建议，最大化集群资源利用率。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-nvitop">什么是 nvitop？</h3>
+                        <p>
+                            <code>nvitop</code> 是一个基于终端的 NVIDIA GPU 监控工具，可以看作是 <code>htop</code> + <code>nvidia-smi</code> 的组合。它能以清晰、美观、实时的方式显示 GPU 利用率、显存、温度和进程。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 极大改善了用户体验。用户（特别是 AI 开发者）在登录节点上运行 <code>nvitop</code>，可以直观地监控自己的 GPU 作业运行状态，快速排查显存溢出等问题。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-lib-jobtop">什么是 JobTop 作业监控工具？</h3>
+                        <p>
+                            JobTop 是一个（通常为自研的）HPC 作业监控工具，它结合了 Slurm 调度器信息和节点实时性能（CPU, 内存）。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 为用户和管理员提供一个集群“全局视图”。用户可以快速查看自己的作业（Job）在哪些节点上运行，以及这些节点的资源使用情况，便于调试和性能分析。
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="section-apps" class="faq-section">
+                <h2>🧬 (九) 应用软件详解</h2>
+                <div class="faq-item-container">
+                    
+                    <!-- CFD/CAE -->
+                    <div class="faq-item">
+                        <h3 id="q-app-fluent">什么是 Ansys Fluent / CFX？</h3>
+                        <p>
+                            Ansys Fluent 和 CFX 是全球领先的商业计算流体力学 (CFD) 仿真软件。Fluent 基于有限体积法，应用广泛；CFX 基于有限元法，在旋转机械（如涡轮、泵）领域有独特优势。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们的HPC平台针对 Fluent/CFX 进行了深度优化，通过高速 InfiniBand 网络和优化的 MPI 库，确保其并行计算效率（Scaling）达到最佳，帮助工程客户极大缩短仿真周期。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-starccm">什么是 Star-CCM+？</h3>
+                        <p>
+                            Star-CCM+ (来自 Siemens) 是一款覆盖全流程的多物理场（CFD, CAE）仿真软件。它以其强大的网格生成能力、易用的工作流和灵活的“按核付费”许可模式而闻名。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Star-CCM+ 对大规模并行核数（数千核）有良好支持。我们的平台为其提供高带宽、低延迟的计算环境，充分发挥其大规模并行的优势，实现高效仿真。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-comsol">什么是 COMSOL Multiphysics？</h3>
+                        <p>
+                            COMSOL 是一款专长于多物理场耦合仿真的 CAE 软件。它允许用户在统一界面中耦合电磁、结构、流体、声学等多种物理现象。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> COMSOL 仿真（特别是 3D 瞬态问题）对内存（RAM）的需求极大。我们提供大内存计算节点（如 1TB/2TB RAM），并支持其在集群上进行分布式并行计算，解决单机无法处理的复杂多物理场问题。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-abaqus">什么是 Abaqus？</h3>
+                        <p>
+                            Abaqus (来自 Dassault Systèmes) 是一款功能强大的非线性有限元分析 (FEA) 软件，广泛应用于结构力学、碰撞、热分析等领域。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Abaqus 求解器能有效利用多核 CPU 和 GPU (NVIDIA) 进行加速。我们提供高性能 CPU 节点和 GPU 加速节点（如 H100/H20），并优化其并行设置，帮助用户高效求解复杂的非线性结构问题。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-lsdyna">什么是 LS-DYNA？</h3>
+                        <p>
+                            LS-DYNA 是一款顶级的显式动力学分析软件，是汽车碰撞、冲击、爆炸和金属成型仿真的行业标准。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> LS-DYNA 的并行效率极高（MPP 版本），对网络延迟非常敏感。我们的平台采用 InfiniBand (IB) 高速网络，确保其大规模并行（数千核）时的计算性能，是运行 LS-DYNA 的理想选择。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-openfoam">什么是 OpenFOAM？</h3>
+                        <p>
+                            OpenFOAM (Open Field Operation and Manipulation) 是一款开源 CFD 软件包，基于 C++ 开发。它以其灵活性、可定制性和庞大的社区而闻名，用户可以自由开发求解器。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们提供针对 Intel/GNU 编译器和 OpenMPI 优化的 OpenFOAM 版本，并通过 InfiniBand 网络加速其并行计算，为科研用户提供一个高性能、零成本的 CFD 解决方案。
+                        </p>
+                    </div>
+
+                    <!-- 生物/化学/材料 -->
+                    <div class="faq-item">
+                        <h3 id="q-app-gromacs">什么是 GROMACS？</h3>
+                        <p>
+                            GROMACS 是一款全球顶级的分子动力学 (MD) 模拟软件，以其极致的计算速度和 GPU 加速性能而著称。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> GROMACS 是我们 GPU 加速平台的“标杆应用”。我们提供针对 NVIDIA GPU (如 H100, H20) 和 CUDA 深度优化的 GROMACS 版本，可实现无与伦比的模拟性能，是生物制药和材料科学研究的利器。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-namd">什么是 NAMD / VMD？</h3>
+                        <p>
+                            NAMD 是一款专为大规模生物分子系统设计的高性能分子动力学软件。VMD 是其配套的可视化和分析工具。NAMD 以其出色的并行扩展性（支持数万核）而闻名。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们的平台支持 NAMD 的 GPU 加速和多节点 MPI 并行，使其能够高效模拟病毒、核糖体等超大分子体系。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-amber">什么是 Amber？</h3>
+                        <p>
+                            Amber 是一套功能全面、历史悠久的分子动力学软件包，广泛应用于生物分子模拟，尤其在力场开发和自由能计算方面有深厚积累。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们提供 Amber 的 CPU (MPI) 并行版和 GPU (<code>pmemd.cuda</code>) 加速版，满足用户从常规模拟到高性能计算的各种需求。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-schrodinger">什么是 Schrödinger (薛定谔)？</h3>
+                        <p>
+                            Schrödinger (薛定谔) 是一套顶级的商业计算化学和药物发现软件套件。它提供了从分子建模、药物设计 (Glide)、FEP+（自由能计算）到材料科学的完整解决方案。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 薛定谔套件（特别是 FEP+）能极好地利用 GPU 进行加速。我们的HPC平台是运行薛定谔软件的理想选择，可为生物制药客户提供强大的计算支持，加速新药研发。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-r-bioconductor">什么是 R (Bioconductor)？</h3>
+                        <p>
+                            Bioconductor 是一个基于 R 语言的开源项目，提供了海量的软件包，专用于高通量基因组学数据的分析（如基因芯片、二代测序 RNA-seq, ChIP-seq）。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们提供预装 Bioconductor 及其众多依赖包的 R 环境。结合大内存节点（处理大型基因组数据）和多核 CPU，我们的平台是生物信息学分析的理想工作站。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-blast">什么是 BLAST？</h3>
+                        <p>
+                            BLAST (Basic Local Alignment Search Tool) 是生物信息学中最基础、最重要的序列比对工具，用于在核酸或蛋白质数据库中搜索同源序列。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> BLAST 搜索（特别是 <code>blastn</code>, <code>blastp</code>）是 CPU 密集型任务。我们的平台通过高主频、多核心的 CPU 节点，并结合 <code>blast+</code> 的多线程能力，极大加速海量数据的序列比对。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-bwa">什么是 BWA？</h3>
+                        <p>
+                            BWA (Burrows-Wheeler Aligner) 是一款高效的短序列比对软件，是二代测序 (NGS) 数据分析流程中将 FASTQ 文件比对到参考基因组的标准工具之一。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> BWA <code>mem</code> 算法支持多线程。我们的平台利用多核 CPU 节点，可以并行处理海量的测序样本，极大缩短基因数据预处理（Alignment）的时间。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-gatk">什么是 GATK？</h3>
+                        <p>
+                            GATK (Genome Analysis Toolkit) 是 Broad 研究所开发的基因变异检测（Variant Calling）的行业金标准。它提供了一整套从原始测序数据 (BAM) 中找出 SNP 和 InDel 的最佳实践流程。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> GATK 流程计算密集且耗时。我们通过 Slurm 调度系统将其流程自动化，并利用多核 CPU 和大内存节点加速其计算，为基因研究提供可靠、高效的变异检测服务。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-vasp">什么是 VASP？</h3>
+                        <p>
+                            VASP (Vienna Ab initio Simulation Package) 是材料科学和计算化学领域应用最广的商业软件包之一，用于基于密度泛函理论 (DFT) 进行第一性原理计算。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> VASP 是典型的 CPU 密集型 + 内存密集型应用，对 MPI 通信性能极其敏感。我们的平台使用高内存带宽 CPU 和 InfiniBand 网络，并提供针对 Intel MKL 和 Intel MPI 优化的 VASP 版本，确保其卓越的并行计算性能。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-gaussian">什么是 Gaussian？</h3>
+                        <p>
+                            Gaussian 是一款功能强大的量子化学计算软件，广泛用于计算分子的结构、能量、振动频率、光谱等各种性质。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Gaussian 对 CPU 单核性能和内存有较高要求。我们提供高主频、大内存的计算节点，并支持其多节点并行（Linda），是运行 Gaussian 任务的理想平台。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-lammps">什么是 LAMMPS？</h3>
+                        <p>
+                            LAMMPS 是一款功能极其丰富的开源经典分子动力学软件，支持金属、半导体、生物、聚合物等各种力场，并对 GPU 加速和多节点并行有出色支持。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们的平台提供 LAMMPS 的 CPU (MPI) 和 GPU (<code>-sf gpu</code>) 版本，用户可以根据模拟体系和规模灵活选择，实现最高性价比的模拟。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-materials-studio">什么是 Materials Studio？</h3>
+                        <p>
+                            Materials Studio (MS) 是一个功能强大的材料模拟平台，提供了图形化界面和多个集成的计算模块（如 CASTEP, DMol3, GULP）。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 用户可以在 MS 图形界面中建模，然后将计算任务（如 CASTEP）提交到HPC集群的 Slurm 队列中。我们的平台实现了图形界面与后端计算的无缝集成，极大提升了材料研发效率。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-quantum-espresso">什么是 Quantum Espresso？</h3>
+                        <p>
+                            Quantum Espresso (QE) 是一款开源的第一性原理计算软件，基于 DFT 和平面波基组，是 VASP 的主要开源替代品，在国际学术界被广泛使用。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们提供针对 MKL/FFTW 和 InfiniBand 优化的 QE 版本，为科研用户提供一个高性能、零成本的 DFT 计算平台。
+                        </p>
+                    </div>
+                    
+                    <!-- AI & Other -->
+                    <div class="faq-item">
+                        <h3 id="q-app-alphafold2">什么是 AlphaFold2？</h3>
+                        <p>
+                            AlphaFold2 是 DeepMind 开发的革命性 AI 模型，它能基于蛋白质序列高精度地预测其三维结构，解决了生物学领域 50 年的重大难题。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> AlphaFold2 的推理过程<strong>极度依赖 GPU（特别是 Tensor Cores）和大显存</strong>。我们的平台提供 H100/H20 等大显存 GPU 节点，并预装了 AlphaFold2 及其庞大的基因数据库，为结构生物学家提供开箱即用的预测服务。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-matlab">什么是 MATLAB？</h3>
+                        <p>
+                            MATLAB (Matrix Laboratory) 是一个集算法开发、数据分析、可视化和数值计算于一体的高级技术计算环境。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们支持 MATLAB 并行计算工具箱 (Parallel Computing Toolbox)，用户可以利用 <code>parfor</code> 在单节点多核运行，或使用 MATLAB Distributed Computing Server (MDCS) 提交作业到 Slurm 队列，利用整个集群的 CPU/GPU 资源进行大规模并行计算。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-mathematica">什么是 Mathematica？</h3>
+                        <p>
+                            Mathematica 是一款以符号计算见长的科学计算软件，在数学、物理和工程领域有广泛应用，并集成了强大的可视化和数据分析功能。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们支持 Mathematica 的并行计算，用户可以在HPC集群上运行其计算密集型内核，解决复杂的符号和数值计算问题。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-jupyter">什么是 Jupyter / JupyterHub？</h3>
+                        <p>
+                            Jupyter (Notebook/Lab) 是一种交互式计算环境，允许用户创建和共享包含代码、公式、可视化和叙述性文本的文档。JupyterHub 则是将 Jupyter 部署为多用户服务的解决方案。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> <strong>这是我们 AI 和数据科学平台的核心入口。</strong> 我们通过 JupyterHub 与 Slurm 调度系统集成，用户在网页上即可登录，并按需申请 CPU/GPU 资源启动其 Notebook，实现交互式的高性能计算和 AI 开发。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-geant4">什么是 Geant4？</h3>
+                        <p>
+                            Geant4 是一款用于模拟粒子在物质中输运的 C++ 软件包。它是高能物理、核物理、医学物理（如放疗剂量计算）和空间科学领域的标准模拟工具。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> Geant4 仿真是典型的 CPU 密集型“吞吐量”计算。我们的平台通过 Slurm 调度系统，支持用户同时提交数千个 Geant4 任务（“参数扫描”），利用海量 CPU 核心实现高通量模拟。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-wrf">什么是 WRF (气象)？</h3>
+                        <p>
+                            WRF (Weather Research and Forecasting) 是一款用于天气预报和大气科学研究的中尺度数值模式。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> WRF 是典型的“访存密集型”和“网络密集型”应用。我们的平台采用高内存带宽 CPU 和 InfiniBand 低延迟网络，并提供针对 Intel 编译器和 Intel MPI 优化的 WRF 版本，确保其高效并行计算。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-pytorch">什么是 PyTorch？</h3>
+                        <p>
+                            PyTorch 是目前学术界和工业界（特别是初创公司）最流行、增长最快的开源深度学习框架。它以其灵活性、易用性 (Python-first) 和动态图机制而闻名。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们的 AI 平台提供针对 NVIDIA GPU (H100/H20)、CUDA, cuDNN 和 InfiniBand (NCCL) 深度优化的 PyTorch 环境，支持从单卡训练到多机多卡分布式训练 (DDP)，完美支持大模型研发。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-app-tensorflow">什么是 TensorFlow？</h3>
+                        <p>
+                            TensorFlow 是由 Google 开发的、成熟的、端到端的开源机器学习平台。它以其强大的生态、工业级的部署能力 (TFX, TF-Serving) 和稳定性而著称。
+                        </p>
+                        <p>
+                            <strong>售前价值：</strong> 我们同样提供针对 GPU 和 InfiniBand 优化的 TensorFlow 环境，支持 Keras 接口和分布式训练 (<code>MirroredStrategy</code>, <code>MultiWorkerMirroredStrategy</code>)，确保 AI 任务高效运行。
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- ADDED: 新增 AI 基础 章节 -->
+            <section id="section-ai" class="faq-section">
+                <h2>🤖 (十) AI 大模型基础</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-ai-concepts-rag">Q: 什么是 RAG, Dify, Agents 和工具链 (Toolchains)？</h3>
+                        <p>
+                            这些是当前 AI 应用开发中的核心热词，它们共同构成了“下一代 AI 应用”的基石：
+                        </p>
+                        <ul>
+                            <li><strong>RAG (Retrieval-Augmented Generation / 检索增强生成):</strong>
+                                <ul>
+                                    <li><strong>是什么：</strong> 一种让大模型（LLM）回答问题时，能够<strong>引用外部知识库</strong>的技术。</li>
+                                    <li><strong>工作流程：</strong> 当用户提问时，系统首先从您的私有数据库（如 PDF, 网页）中检索相关文档片段，然后将这些片段和用户的问题一起“喂”给大模型，让模型基于这些“开卷”材料来回答。</li>
+                                    <li><strong>售前价值：</strong> 完美解决大模型“一本正经胡说八道”和“知识老旧”的问题。是构建企业私有知识库（如智能客服、法务助手）的<strong>必需技术</strong>。</li>
+                                </ul>
+                            </li>
+                            <li><strong>Agents (智能体):</strong>
+                                <ul>
+                                    <li><strong>是什么：</strong> 赋予大模型“思考-行动-观察”循环能力的程序框架。Agent 不仅仅是回答问题，它还能<strong>主动规划、执行任务</strong>。</li>
+                                    <li><strong>工作流程：</strong> Agent 会根据一个总目标（如“帮我预订明天去上海的机票”），自主将其分解为多个步骤（① 查天气 ② 查航班 ③ 筛选最优航班 ④ 调用订票 API ⑤ 确认订票），并循环执行直到任务完成。</li>
+                                    <li><strong>售前价值：</strong> 将大模型从“聊天玩具”变为“自动化员工”，用于执行复杂的自动化流程。</li>
+                                </ul>
+                            </li>
+                            <li><strong>工具链 (Toolchains / Function Calling):</strong>
+                                <ul>
+                                    <li><strong>是什么：</strong> 让大模型能够<strong>调用外部工具 (API)</strong> 的能力。例如调用计算器、搜索引擎、企业 CRM 系统。</li>
+                                    <li><strong>工作流程：</strong> 当模型判断需要外部信息（如“今天天气如何？”）或需要执行操作（如“创建一条销售线索”）时，它会生成一段特定格式的 JSON，请求调用某个 API。</li>
+                                    <li><strong>售前价值：</strong> 这是 Agent 的基础。它打通了模型与“现实世界”的连接，使其能获取实时信息并反向控制其他软件。</li>
+                                </ul>
+                            </li>
+                            <li><strong>Dify (dify.ai):</strong>
+                                <ul>
+                                    <li><strong>是什么：</strong> 一个开源的、可视化的 LLM 应用开发平台（LLMOps）。</li>
+                                    <li><strong>售前价值：</strong> Dify 极大降低了 AI 应用开发门槛。它将 RAG、Agents、工具链等复杂概念封装为<strong>图形化界面</strong>，允许业务人员通过“拖拉拽”的方式快速构建和部署一个完整的 AI 应用（如 RAG 知识库），是理想的 AI 应用原型验证和交付工具。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-ai-model-formats">Q: AI 模型文件格式 (.safetensors, .gguf, .pth) 有什么区别？</h3>
+                        <p>
+                            模型文件格式决定了模型的存储、加载方式和运行环境。选择错误的格式会导致模型无法运行或存在安全风险。
+                        </p>
+                        <div class="faq-item-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>格式</th>
+                                        <th>主要用途</th>
+                                        <th>核心特点</th>
+                                        <th>售前建议</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>.safetensors</code></td>
+                                        <td><strong>AI 训练/推理 (Hugging Face 标准)</strong></td>
+                                        <td><strong>安全、快速。</strong> 专为存储大型张量设计，加载速度极快，且（与 <code>.pth</code> 不同）<strong>不会执行任意代码</strong>，杜绝了“模型藏毒”的安全风险。</td>
+                                        <td><strong>HPC/AI 平台首选。</strong> PyTorch 和 TensorFlow 推理的标准格式。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>.gguf</code> (GGUF)</td>
+                                        <td><strong>CPU / Mac / 消费级卡推理</strong></td>
+                                        <td><strong>量化、跨平台。</strong> 这是 <code>llama.cpp</code> 项目的格式。它将模型进行了 4-bit/8-bit 量化，极大压缩了体积，使其能在 CPU、苹果 M 芯片或小显存 GPU 上运行。</td>
+                                        <td>适用于边缘计算、PC 客户端部署，或在HPC上进行低成本的 CPU 推理。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>.pth</code> (PyTorch)</td>
+                                        <td>AI 训练 (旧格式)</td>
+                                        <td><strong>灵活、不安全。</strong> PyTorch 默认的保存格式，使用 Python 的 <code>pickle</code> 序列化。<strong>存在严重安全隐患</strong>，加载恶意 <code>.pth</code> 文件等于执行任意 Python 代码。</td>
+                                        <td>仅在训练过程中临时使用。<strong>禁止</strong>从不可信来源加载 <code>.pth</code> 文件。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>.bin</code> / <code>.ckpt</code></td>
+                                        <td>旧版格式</td>
+                                        <td>PyTorch / TensorFlow 的旧版或自定义保存格式，通常与 <code>.safetensors</code> 类似，但无统一标准。</td>
+                                        <td>建议转换为 <code>.safetensors</code> 格式以保证安全和兼容性。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-ai-deployment-process">Q: AI 大模型（如 Llama 3）的部署流程概览是什么？</h3>
+                        <p>
+                            在 HPC 集群上部署一个大模型，并将其作为 API 服务提供给业务使用，通常包含以下几个关键步骤：
+                        </p>
+                        <ul>
+                            <li><strong>① 模型下载与格式转换：</strong>
+                                <ul>
+                                    <li>从 Hugging Face 或 ModelScope 等模型社区下载模型权重（如 Llama-3-8B-Instruct）。</li>
+                                    <li>优先下载 <code>.safetensors</code> 格式。如果是 <code>.pth</code> 格式，建议在安全环境中转换为 <code>.safetensors</code>。</li>
+                                </ul>
+                            </li>
+                            <li><strong>② 选择推理框架：</strong>
+                                <ul>
+                                    <li><strong>vLLM:</strong> <strong>性能首选。</strong> 专为 NVIDIA GPU 打造的高吞吐量推理框架，支持 PagedAttention 等技术，性能极高。</li>
+                                    <li><strong>TGI (Text Generation Inference):</strong> Hugging Face 官方框架，功能全面，稳定成熟。</li>
+                                    <li><strong>Ollama:</strong> 部署和管理最简单的框架，适合快速测试和本地运行。</li>
+                                    <li><strong>llama.cpp (Python 绑定):</strong> 如果需要在 CPU 或非 NVIDIA GPU 上运行 GGUF 量化模型。</li>
+                                </ul>
+                            </li>
+                            <li><strong>③ 启动推理服务 (Inference Server)：</strong>
+                                <ul>
+                                    <li>使用 Slurm 向 GPU 队列（如 <code>gpu_queue</code>）提交一个作业，启动所选框架（如 vLLM）的服务。</li>
+                                    <li>此服务会<strong>将模型加载到 GPU 显存中</strong>，并监听一个网络端口（如 8000）。</li>
+                                    <li><strong>关键：</strong> 必须确保 GPU 显存 (VRAM) 足够大。例如 8B 模型（FP16）需要约 16GB 显存，70B 模型需要约 140GB 显存（需要 2xH100 或 1xH200）。</li>
+                                </ul>
+                            </li>
+                            <li><strong>④ API 接口调用：</strong>
+                                <ul>
+                                    <li>推理服务启动后，它会提供一个与 OpenAI 兼容的 API 接口（如 <code>/v1/chat/completions</code>）。</li>
+                                    <li>您的业务应用（如网站、Dify 平台）现在可以通过 HTTP 请求向这个 API 地址发送 JSON 数据（如 <code>{"model": "llama-3-8b", "messages": [...]}</code>），并接收模型的流式或非流式响应。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="faq-item">
+                        <h3 id="q-ai-model-selection">Q: 我应该如何为我的应用场景选择合适的 AI 模型？</h3>
+                        <p>
+                            模型选型是 AI 成功的关键。不同的模型擅长不同的任务，以下是当前（2025年）主流模型的选型指南：
+                        </p>
+                        <div class="faq-item-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>应用场景</th>
+                                        <th>推荐模型</th>
+                                        <th>选型理由 (售前价值)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>通用聊天 / 文本生成 / RAG</strong></td>
+                                        <td><strong>Llama 3 (8B / 70B)</strong><br><strong>GLM-4 (9B / 130B)</strong></td>
+                                        <td><strong>Llama 3:</strong> 综合能力最强，中英文效果俱佳，社区生态最好，是开源模型的“事实标准”。<br><strong>GLM-4:</strong> 智谱 AI 出品，中文能力极其出色，并且原生支持强大的工具调用 (Toolchains) 和 Agents。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>文生图 (Text-to-Image)</strong></td>
+                                        <td><strong>Stable Diffusion 3 (SD3)</strong><br><strong>Stable Cascade</strong></td>
+                                        <td><strong>SD3:</strong> 效果最强，对复杂提示词（Prompt）的理解和排版（文字生成）能力有飞跃式提升。<br><strong>Stable Cascade:</strong> 效果优秀，但推理速度快、显存占用低，是“性价比”最高的出图方案。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>代码生成与辅助</strong></td>
+                                        <td><strong>Llama 3 (8B / 70B)</strong><br><strong>Code Llama (70B)</strong></td>
+                                        <td><strong>Llama 3:</strong> 新一代模型的代码能力已追平甚至超越了专门的代码模型。<br><strong>Code Llama:</strong> 专为代码优化的模型，在代码补全、Debug、生成测试用例方面依然非常强大。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>边缘/客户端/CPU 推理</strong></td>
+                                        <td><strong>Qwen2 (1.5B / 7B) - GGUF</strong><br><strong>Llama 3 (8B) - GGUF</strong></td>
+                                        <td>GGUF 量化格式是 CPU 推理的唯一选择。<strong>Qwen2 (通义千问):</strong> 阿里巴巴出品，小尺寸模型（1.5B, 7B）在同级别中表现极好，中英文均衡。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>文生视频 (Text-to-Video)</strong></td>
+                                        <td><strong>Sora (OpenAI, 未开放)</strong><br><strong>Stable Video Diffusion</strong></td>
+                                        <td><strong>Sora:</strong> 效果标杆。<strong>Stable Video Diffusion:</strong> 目前最成熟的开源方案，能生成几秒钟的短视频，适合作为技术预研。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>语音识别 (ASR)</strong></td>
+                                        <td><strong>Whisper (Large-v3)</strong></td>
+                                        <td>OpenAI 出品，是当前语音识别（转录）和翻译的“绝对标杆”，准确率极高。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>文本转语音 (TTS)</strong></td>
+                                        <td><strong>GPT-4o (OpenAI)</strong><br><strong>ChatTTS</strong></td>
+                                        <td><strong>GPT-4o:</strong> 情感、语气最自然的 TTS。<br><strong>ChatTTS:</strong> 开源模型中的佼佼者，效果接近真人，支持中英文，适合构建语音助手。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- MODIFIED: 计算器章节重编号 -->
+            <section id="section-calculator" class="faq-section">
+                <h2>🕸️ (十一) 网络拓扑计算器</h2>
+                <div class="faq-item-container">
+                    <div class="faq-item">
+                        <h3 id="q-calculator-nonblocking">全线速无阻塞 (Fat-Tree) 网络计算器</h3>
+                        <p>
+                            使用此工具计算构建一个 <strong>1:1 全线速无阻塞 2 层胖树 (Fat-Tree)</strong> 网络所需的交换机数量。
+                            此计算基于标准 2 层 Clos 架构，其中 Leaf 交换机使用一半端口（或等效带宽）连接节点，一半端口连接 Spine 交换机。
+                        </p>
+                        <div class="calculator-form-container">
+                            <div class="calculator-form">
+                                <div class="form-group">
+                                    <label for="calc-switch">① 选择交换机型号</label>
+                                    <select id="calc-switch">
+                                        <option value="qm8700">QM8700 (HDR, 40口 200G)</option>
+                                        <option value="qm9700">QM9700 (NDR, 64口 400G)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="calc-hca">② 选择节点网卡 (HCA) 速率</label>
+                                    <select id="calc-hca">
+                                        <option value="100">100G HDR (CX6)</option>
+                                        <option value="200">200G HDR (CX6)</option>
+                                        <!-- ADDED: 200G NDR (CX7) 选项 -->
+                                        <option value="200">200G NDR (CX7)</option>
+                                        <option value="400">400G NDR (CX7)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="calc-nodes">③ 输入节点端口总数</label>
+                                    <input type="number" id="calc-nodes" value="128" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <button id="calc-button" class="calc-button">开始计算</button>
+                                </div>
+                            </div>
+                            <div id="calc-result" style="display: none;">
+                                <!-- 结果将动态插入这里 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>© 2025 [您的公司名称] | HPC 高性能计算解决方案事业部</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const l1Links = document.querySelectorAll('.l1-link');
+            
+            l1Links.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 切换按钮的 active 状态
+                    button.classList.toggle('active');
+                    
+                    // 找到对应的 L2 菜单
+                    const targetId = button.getAttribute('data-target');
+                    const l2menu = document.querySelector(targetId);
+                    
+                    // 切换 L2 菜单的展开/收起
+                    if (l2menu.style.maxHeight) {
+                        // 如果已展开，则收起
+                        l2menu.style.maxHeight = null;
+                    } else {
+                        // 如果已收起，则展开 (设置为其内容高度)
+                        let lMultiples = Math.ceil(l2menu.scrollHeight / 100);
+                        l2menu.style.maxHeight = (lMultiples * 100) + 'px'; // 使用 scrollHeight
+                    }
+
+                    // (可选) 关闭其他打开的菜单
+                    l1Links.forEach(otherButton => {
+                        if (otherButton !== button) {
+                            otherButton.classList.remove('active');
+                            const otherL2menu = document.querySelector(otherButton.getAttribute('data-target'));
+                            otherL2menu.style.maxHeight = null;
+                        }
+                    });
+                });
+            });
+
+            // 默认展开第一个 L1 菜单 (服务器)
+            const firstL1Button = document.querySelector('.l1-link');
+            if (firstL1Button) {
+                firstL1Button.classList.add('active');
+                const firstL2Menu = document.querySelector(firstL1Button.getAttribute('data-target'));
+                if (firstL2Menu) {
+                    firstL2Menu.style.maxHeight = firstL2Menu.scrollHeight + 'px';
+                }
+            }
+
+            // --- ADDED: 计算器逻辑 ---
+            const calcButton = document.getElementById('calc-button');
+            if (calcButton) {
+                calcButton.addEventListener('click', calculateNetwork);
+            }
+        });
+
+        // MODIFIED: 彻底重写计算器逻辑
+        function calculateNetwork() {
+            const switchModel = document.getElementById('calc-switch').value;
+            // MODIFIED: 获取 HCA 的速率和文本
+            const hcaSelect = document.getElementById('calc-hca');
+            const hcaSpeed = parseInt(hcaSelect.value, 10);
+            const hcaText = hcaSelect.options[hcaSelect.selectedIndex].text; // 获取选中的文本
+            const nodeCount = parseInt(document.getElementById('calc-nodes').value, 10);
+            const resultDiv = document.getElementById('calc-result');
+
+            let k, portSpeed, switchName;
+            if (switchModel === 'qm8700') {
+                k = 40; // 物理端口数
+                portSpeed = 200; // 端口速率
+                switchName = "QM8700 (40x200G)";
+            } else { // qm9700
+                k = 64; // 物理端口数
+                portSpeed = 400; // 端口速率
+                switchName = "QM9700 (64x400G)";
+            }
+
+            let html = `<h4>网络拓扑计算结果</h4>`;
+            
+            // --- 1. 验证输入 ---
+            if (!nodeCount || nodeCount <= 0) {
+                html += `<p class="calc-error">错误：请输入一个有效的节点端口数量。</p>`;
+                resultDiv.innerHTML = html;
+                resultDiv.style.display = 'block';
+                return;
+            }
+
+            if (hcaSpeed > portSpeed) {
+                html += `<p class="calc-error">错误：网卡速率 (${hcaSpeed}G) 不能高于交换机端口速率 (${portSpeed}G)。</p>`;
+                resultDiv.innerHTML = html;
+                resultDiv.style.display = 'block';
+                return;
+            }
+            
+            // --- 2. 计算基础参数 ---
+            const breakoutFactor = portSpeed / hcaSpeed;
+            const k_eff = k * breakoutFactor; // 交换机等效逻辑端口数
+            
+            html += `<p><strong>基础参数：</strong></p>`;
+            html += `<ul>`;
+            html += `<li>所选交换机: <code>${switchName}</code> (<code>${k}</code> 个物理口 @ <code>${portSpeed}G</code>)</li>`;
+            html += `<li>所选网卡: <code>${hcaText}</code> (<code>${hcaSpeed}G</code>)</li>`;
+            html += `<li>端口拆分比: <code>1:${breakoutFactor}</code></li>`;
+            html += `<li>单交换机最大 ${hcaSpeed}G 逻辑端口: <code>${k_eff}</code></li>`;
+            html += `</ul>`;
+            html += `<hr style="border:0; border-top: 1px dashed #ccc; margin: 15px 0;">`;
+
+            // --- 3. 场景 1: 1-Layer 拓扑 (单交换机) ---
+            // 核心逻辑：如果节点数小于等于交换机总逻辑端口数，则只需要1台交换机
+            if (nodeCount <= k_eff) {
+                html += `<p><strong>计算方案：1-Layer 拓扑 (单交换机)</strong></p>`;
+                html += `<p>所需节点数 (<code>${nodeCount}</code>) 不超过单台交换机的最大逻辑端口 (<code>${k_eff}</code>)。</p>`;
+                html += `<p><strong>总计需要 <code>1</code> 台 ${switchName} 交换机。</strong></p>`;
+                html += `<p>网络为 1:1 全线速无阻塞。</p>`;
+                html += `<br>`;
+                html += `<p><strong>线缆需求 (逻辑端口)：</strong></p>`;
+                html += `<p>下行线缆 (节点-交换机): <code>${nodeCount}</code> 条 (${hcaSpeed}G)</li>`;
+            
+            } else {
+            // --- 4. 场景 2: 2-Layer 拓扑 (Fat-Tree) ---
+                // 采用标准 1:1 Clos 架构，k/2 物理口向下，k/2 物理口向上
+                const physicalDownlinksPerLeaf = k / 2;
+                const physicalUplinksPerLeaf = k / 2;
+                
+                // 每台 Leaf 能带的节点数
+                const numNodesPerLeaf = physicalDownlinksPerLeaf * breakoutFactor; 
+                
+                // 1:1 架构要求的 Spine 交换机数量 (等于 Leaf 的物理上行口)
+                // const numSpines = physicalUplinksPerLeaf; // <-- 旧逻辑
+                
+                // 每台 Spine 能连接的 Leaf 交换机数 (等于 Spine 的物理口)
+                const maxLeaves = k; 
+                
+                // 2层网络最大支持的节点数
+                const maxNodes = maxLeaves * numNodesPerLeaf;
+
+                if (nodeCount > maxNodes) {
+                    html += `<p><strong>计算方案：2-Layer 拓扑 (Fat-Tree)</strong></p>`;
+                    html += `<p class="calc-error">错误：所需节点数 (<code>${nodeCount}</code>) 超过了 2 层网络拓扑的最大限制 (<code>${maxNodes}</code>)。</p>`;
+                    html += `<p>此配置下，2层拓扑最大支持 <code>${maxNodes}</code> 个节点 (<code>${maxLeaves}</code> Leaves × <code>${numNodesPerLeaf}</code> Nodes/Leaf)。</p>`;
+                    html += `<p>请考虑 3 层 Clos 网络或联系我们的售前专家。</p>`;
+                
+                } else {
+                    // 计算所需的 Leaf 交换机数量
+                    const numLeaves = Math.ceil(nodeCount / numNodesPerLeaf);
+                    
+                    // MODIFIED: 1:1 架构要求的 Spine 交换机数量 S = (L * (k/2)) / k = L / 2
+                    // 必须向上取整，以处理 L 为奇数的情况，确保上行带宽
+                    const numSpines = Math.ceil(numLeaves / 2); 
+                    
+                    const totalSwitches = numLeaves + numSpines;
+                    
+                    // 线缆计算
+                    const downlinks = nodeCount; // 节点到 Leaf
+                    const uplinks_logical = numLeaves * physicalUplinksPerLeaf * breakoutFactor; // Leaf 到 Spine (逻辑)
+                    const uplinks_physical = numLeaves * physicalUplinksPerLeaf; // Leaf 到 Spine (物理)
+
+                    html += `<p><strong>计算方案：2-Layer 1:1 无阻塞 Fat-Tree</strong></p>`;
+                    html += `<ul>`;
+                    html += `<li>每 Leaf 物理下行/上行口: <code>${physicalDownlinksPerLeaf}</code> / <code>${physicalUplinksPerLeaf}</code></li>`;
+                    html += `<li>每 Leaf 逻辑下行/上行口: <code>${numNodesPerLeaf}</code> / <code>${physicalUplinksPerLeaf * breakoutFactor}</code></li>`;
+                    html += `</ul>`;
+                    html += `<p>Leaf (叶) 交换机数量: <code>${numLeaves}</code> 台</p>`;
+                    html += `<p>Spine (脊) 交换机数量: <code>${numSpines}</code> 台</p>`;
+                    // MODIFIED: 更新注释以匹配新逻辑
+                    html += `<p style="font-size: 0.9em; color: #666;"><em>(注: 1:1无阻塞架构 (S=L/2)。总Leaf上行 = <code>${numLeaves} * ${physicalUplinksPerLeaf}</code>。总Spine端口 = <code>${numSpines} * ${k}</code>。)</em></p>`;
+                    html += `<p><strong>总计需要 <code>${totalSwitches}</code> 台 ${switchName} 交换机。</strong></p>`;
+                    html += `<br>`;
+                    
+                    // MODIFIED: 更改了线缆需求的描述，使其更清晰
+                    html += `<p><strong>线缆需求：</strong></p>`;
+                    html += `<p>下行线缆 (节点-Leaf): <code>${downlinks}</code> 条 (${hcaSpeed}G 逻辑链路)</li>`;
+                    html += `<p>上行线缆 (Leaf-Spine): <code>${uplinks_physical}</code> 条 (${portSpeed}G 物理链路)</li>`;
+                    html += `<p style="font-size: 0.9em; color: #666;"><em>(注: 每条 ${portSpeed}G 物理链路承载 <code>${breakoutFactor}</code> 条 ${hcaSpeed}G 逻辑链路。总逻辑上行 = <code>${uplinks_logical}</code> 条)</em></p>`;
+                }
+            }
+
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+        }
+
+    </script>
+
+</body>
+</html>
+
