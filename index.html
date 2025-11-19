@@ -8,6 +8,7 @@
         /* 全局设置 */
         html {
             scroll-behavior: smooth; /* 页面平滑滚动 */
+            overflow-y: scroll; /* 强制显示垂直滚动条，防止页面跳动 */
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -17,6 +18,71 @@
             margin: 0;
             padding: 0;
         }
+
+        /* --- 密码访问层样式 (新增) --- */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f7f6; /* 与背景色一致，遮挡内容 */
+            z-index: 99999; /* 最高层级 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .password-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .password-box h2 {
+            margin-top: 0;
+            color: #004a99;
+        }
+        .password-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .password-box button {
+            background-color: #004a99;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .password-box button:hover {
+            background-color: #003366;
+        }
+        #password-error {
+            color: #d9534f;
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: none;
+        }
+        /* 模糊背景效果（可选，密码层存在时背景模糊） */
+        body.locked > *:not(#password-overlay) {
+            filter: blur(5px);
+        }
+        /* --- 密码访问层样式结束 --- */
 
         /* 顶部 Header */
         header {
@@ -69,6 +135,41 @@
             border-bottom: 2px solid #e9ecef;
         }
         
+        /* --- 新增：搜索框样式 --- */
+        .search-container {
+            margin: 15px 0;
+        }
+        #faq-search {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 0.95em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
+            background-color: #f8f9fa;
+        }
+        #faq-search:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: #fff3a3; /* 亮黄色高亮 */
+            border-radius: 3px;
+            padding: 1px 2px;
+            font-weight: 600;
+        }
+        /* 搜索无结果提示 */
+        #search-no-result {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            padding: 20px;
+            display: none; /* 默认隐藏 */
+        }
+        /* --- 搜索框样式结束 --- */
+
         /* L1 目录 (主类别) */
         .l1-menu {
             list-style: none;
@@ -183,11 +284,17 @@
         .faq-item:first-child {
             padding-top: 10px;
         }
+        /* 存储原始
+        HTML，用于高亮恢复 */
+        .faq-item h3, .faq-item p, .faq-item li {
+            position: relative;
+        }
+
         .faq-item h3 {
             font-size: 1.3em;
             color: #333;
             margin: 0 0 10px 0;
-            position: relative;
+            /* position: relative; */ /* 已移到 .faq-item h3, ... */
             padding-left: 30px;
             scroll-margin-top: 20px; /* Q: 锚点偏移 */
         }
@@ -222,6 +329,7 @@
         }
         .faq-item li {
             margin-bottom: 8px;
+            /* position: relative; */ /* 已移到 .faq-item h3, ... */
         }
         
         /* GPU 参数列表专用样式 */
@@ -385,9 +493,133 @@
             color: #888;
             margin-top: 20px;
         }
+        
+        /* --- 新增：响应式设计 --- */
+        .nav-toggle-button {
+            display: none; /* 默认隐藏 */
+            background-color: #004a99;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 0 15px 0;
+            width: 100%;
+        }
+
+        /* 针对手机屏幕 (例如：小于 768px) */
+        @media (max-width: 768px) {
+            /* 头部调整 */
+            header {
+                padding: 15px 20px;
+            }
+            header h1 {
+                font-size: 1.8em;
+            }
+            header p {
+                font-size: 1em;
+            }
+
+            /* 页面布局变为垂直堆叠 */
+            .page-wrapper {
+                flex-direction: column;
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+
+            /* 显示切换按钮 */
+            .nav-toggle-button {
+                display: block;
+            }
+
+            /* 导航栏默认隐藏，并改为非粘性 */
+            .faq-nav {
+                display: none; /* 默认隐藏 */
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                max-height: 50vh; /* 限制高度，可滚动 */
+                margin-bottom: 15px;
+                overflow-y: auto; /* 确保在受限高度内可滚动 */
+            }
+
+            /* 当导航被JS显示时的样式 */
+            .faq-nav.is-visible {
+                display: block;
+            }
+
+            /* 内容区占满宽度 */
+            .faq-content {
+                width: 100%;
+            }
+
+            /* 内容区内边距调整 */
+            .faq-section h2 {
+                font-size: 1.5em;
+                padding: 20px 25px;
+            }
+            .faq-item-container {
+                padding: 10px 25px 20px 25px;
+            }
+            
+            /* Q&A 字体和边距调整 */
+            .faq-item h3 {
+                font-size: 1.15em;
+                padding-left: 25px;
+            }
+            .faq-item p, .faq-item ul, .faq-item-grid, .faq-item-table, .calculator-form-container {
+                font-size: 1em;
+                padding-left: 25px;
+            }
+            .faq-item ul {
+                padding-left: 10px; /* 减少列表缩进 */
+            }
+            .faq-item ul::before {
+                left: -10px;
+            }
+
+            /* 解决表格溢出问题 */
+            .faq-item-table {
+                overflow-x: auto; /* 允许表格水平滚动 */
+                padding-left: 25px; /* 保持 A: 标记的间距 */
+            }
+            .faq-item-table table {
+                 width: auto; /* 允许表格内容决定宽度 */
+                 min-width: 600px; /* 保证表格不会被过度压缩 */
+            }
+
+            /* 计算器表单堆叠 */
+            .calculator-form {
+                 grid-template-columns: 1fr;
+                 gap: 15px;
+            }
+            .calc-button {
+                height: 46px; /* 保持一致 */
+            }
+            
+            /* GPU 参数列表 */
+            .gpu-specs {
+                padding-left: 25px !important;
+            }
+        }
+        
     </style>
 </head>
-<body>
+<body class="locked">
+
+    <!-- 密码访问层 (新增) -->
+    <div id="password-overlay">
+        <div class="password-box">
+            <h2>🔒 访问受限</h2>
+            <p>请输入密码以查看 HPC 售前技术 FAQ 内容。</p>
+            <input type="password" id="access-password" placeholder="请输入访问密码">
+            <button id="btn-unlock">解锁页面</button>
+            <div id="password-error">密码错误，请重试！</div>
+        </div>
+    </div>
 
     <header>
         <h1>HPC 高性能计算 售前技术 FAQ</h1>
@@ -395,8 +627,17 @@
     </header>
 
     <div class="page-wrapper">
+        <!-- 新增：导航切换按钮 -->
+        <button id="nav-toggle" class="nav-toggle-button">☰ 显示导航</button>
+        
         <nav class="faq-nav">
             <h3>快速导航</h3>
+            
+            <!-- 新增：搜索框 -->
+            <div class="search-container">
+                <input type="text" id="faq-search" placeholder="搜索 FAQ 内容...">
+            </div>
+            
             <ul class="l1-menu">
                 <li>
                     <button class="l1-link" data-target="#l2-menu-server">💻 (一) 服务器</button>
@@ -546,19 +787,9 @@
                         <li><a href="#q-app-tensorflow">TensorFlow</a></li>
                     </ul>
                 </li>
-                <!-- ADDED: 新增 AI 基础 导航 -->
+                <!-- ADDED: 新增计算器导航 -->
                 <li>
-                    <button class="l1-link" data-target="#l2-menu-ai">🤖 (十) AI 大模型基础</button>
-                    <ul id="l2-menu-ai" class="l2-menu">
-                        <li><a href="#q-ai-concepts-rag">AI 核心概念 (RAG / Dify / ...)</a></li>
-                        <li><a href="#q-ai-model-formats">AI 模型文件格式 (safetensors / GGUF)</a></li>
-                        <li><a href="#q-ai-deployment-process">AI 模型部署流程概览</a></li>
-                        <li><a href="#q-ai-model-selection">AI 模型选型 (Llama / GLM / SD)</a></li>
-                    </ul>
-                </li>
-                <!-- MODIFIED: 计算器导航重编号 -->
-                <li>
-                    <button class="l1-link" data-target="#l2-menu-calculator">🕸️ (十一) 网络拓扑计算器</button>
+                    <button class="l1-link" data-target="#l2-menu-calculator">🕸️ (十) 网络拓扑计算器</button>
                     <ul id="l2-menu-calculator" class="l2-menu">
                         <li><a href="#q-calculator-nonblocking">无阻塞网络计算</a></li>
                     </ul>
@@ -567,6 +798,10 @@
         </nav>
 
         <main class="faq-content">
+            <!-- 新增：搜索无结果提示 -->
+            <div id="search-no-result">
+                <p>未找到匹配 “<span id="search-term-display"></span>” 的结果。</p>
+            </div>
 
             <!-- ... (章节 1 到 7 保持不变) ... -->
             
@@ -1180,7 +1415,7 @@
                 <h2>📊 (六) 作业管理系统</h2>
                 <div class="faq-item-container">
                     <div class="faq-item">
-                        <h3 id="q-job-slurm">什么是作业调度系统 (如 Slurm)？为什么我必须用它？</h3>
+                        <h3 id="q-job-slurm">什么是作业调度系统 (Slurm)？为什么我必须用它？</h3>
                         <p>
                             调度系统是集群的<strong>“交通警察”</strong>和<strong>“资源管家”</strong>。HPC 集群是共享资源，没有调度系统会立即陷入混乱。
                         </p>
@@ -1884,184 +2119,9 @@
                 </div>
             </section>
             
-            <!-- ADDED: 新增 AI 基础 章节 -->
-            <section id="section-ai" class="faq-section">
-                <h2>🤖 (十) AI 大模型基础</h2>
-                <div class="faq-item-container">
-                    <div class="faq-item">
-                        <h3 id="q-ai-concepts-rag">Q: 什么是 RAG, Dify, Agents 和工具链 (Toolchains)？</h3>
-                        <p>
-                            这些是当前 AI 应用开发中的核心热词，它们共同构成了“下一代 AI 应用”的基石：
-                        </p>
-                        <ul>
-                            <li><strong>RAG (Retrieval-Augmented Generation / 检索增强生成):</strong>
-                                <ul>
-                                    <li><strong>是什么：</strong> 一种让大模型（LLM）回答问题时，能够<strong>引用外部知识库</strong>的技术。</li>
-                                    <li><strong>工作流程：</strong> 当用户提问时，系统首先从您的私有数据库（如 PDF, 网页）中检索相关文档片段，然后将这些片段和用户的问题一起“喂”给大模型，让模型基于这些“开卷”材料来回答。</li>
-                                    <li><strong>售前价值：</strong> 完美解决大模型“一本正经胡说八道”和“知识老旧”的问题。是构建企业私有知识库（如智能客服、法务助手）的<strong>必需技术</strong>。</li>
-                                </ul>
-                            </li>
-                            <li><strong>Agents (智能体):</strong>
-                                <ul>
-                                    <li><strong>是什么：</strong> 赋予大模型“思考-行动-观察”循环能力的程序框架。Agent 不仅仅是回答问题，它还能<strong>主动规划、执行任务</strong>。</li>
-                                    <li><strong>工作流程：</strong> Agent 会根据一个总目标（如“帮我预订明天去上海的机票”），自主将其分解为多个步骤（① 查天气 ② 查航班 ③ 筛选最优航班 ④ 调用订票 API ⑤ 确认订票），并循环执行直到任务完成。</li>
-                                    <li><strong>售前价值：</strong> 将大模型从“聊天玩具”变为“自动化员工”，用于执行复杂的自动化流程。</li>
-                                </ul>
-                            </li>
-                            <li><strong>工具链 (Toolchains / Function Calling):</strong>
-                                <ul>
-                                    <li><strong>是什么：</strong> 让大模型能够<strong>调用外部工具 (API)</strong> 的能力。例如调用计算器、搜索引擎、企业 CRM 系统。</li>
-                                    <li><strong>工作流程：</strong> 当模型判断需要外部信息（如“今天天气如何？”）或需要执行操作（如“创建一条销售线索”）时，它会生成一段特定格式的 JSON，请求调用某个 API。</li>
-                                    <li><strong>售前价值：</strong> 这是 Agent 的基础。它打通了模型与“现实世界”的连接，使其能获取实时信息并反向控制其他软件。</li>
-                                </ul>
-                            </li>
-                            <li><strong>Dify (dify.ai):</strong>
-                                <ul>
-                                    <li><strong>是什么：</strong> 一个开源的、可视化的 LLM 应用开发平台（LLMOps）。</li>
-                                    <li><strong>售前价值：</strong> Dify 极大降低了 AI 应用开发门槛。它将 RAG、Agents、工具链等复杂概念封装为<strong>图形化界面</strong>，允许业务人员通过“拖拉拽”的方式快速构建和部署一个完整的 AI 应用（如 RAG 知识库），是理想的 AI 应用原型验证和交付工具。</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="faq-item">
-                        <h3 id="q-ai-model-formats">Q: AI 模型文件格式 (.safetensors, .gguf, .pth) 有什么区别？</h3>
-                        <p>
-                            模型文件格式决定了模型的存储、加载方式和运行环境。选择错误的格式会导致模型无法运行或存在安全风险。
-                        </p>
-                        <div class="faq-item-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>格式</th>
-                                        <th>主要用途</th>
-                                        <th>核心特点</th>
-                                        <th>售前建议</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>.safetensors</code></td>
-                                        <td><strong>AI 训练/推理 (Hugging Face 标准)</strong></td>
-                                        <td><strong>安全、快速。</strong> 专为存储大型张量设计，加载速度极快，且（与 <code>.pth</code> 不同）<strong>不会执行任意代码</strong>，杜绝了“模型藏毒”的安全风险。</td>
-                                        <td><strong>HPC/AI 平台首选。</strong> PyTorch 和 TensorFlow 推理的标准格式。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>.gguf</code> (GGUF)</td>
-                                        <td><strong>CPU / Mac / 消费级卡推理</strong></td>
-                                        <td><strong>量化、跨平台。</strong> 这是 <code>llama.cpp</code> 项目的格式。它将模型进行了 4-bit/8-bit 量化，极大压缩了体积，使其能在 CPU、苹果 M 芯片或小显存 GPU 上运行。</td>
-                                        <td>适用于边缘计算、PC 客户端部署，或在HPC上进行低成本的 CPU 推理。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>.pth</code> (PyTorch)</td>
-                                        <td>AI 训练 (旧格式)</td>
-                                        <td><strong>灵活、不安全。</strong> PyTorch 默认的保存格式，使用 Python 的 <code>pickle</code> 序列化。<strong>存在严重安全隐患</strong>，加载恶意 <code>.pth</code> 文件等于执行任意 Python 代码。</td>
-                                        <td>仅在训练过程中临时使用。<strong>禁止</strong>从不可信来源加载 <code>.pth</code> 文件。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>.bin</code> / <code>.ckpt</code></td>
-                                        <td>旧版格式</td>
-                                        <td>PyTorch / TensorFlow 的旧版或自定义保存格式，通常与 <code>.safetensors</code> 类似，但无统一标准。</td>
-                                        <td>建议转换为 <code>.safetensors</code> 格式以保证安全和兼容性。</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <h3 id="q-ai-deployment-process">Q: AI 大模型（如 Llama 3）的部署流程概览是什么？</h3>
-                        <p>
-                            在 HPC 集群上部署一个大模型，并将其作为 API 服务提供给业务使用，通常包含以下几个关键步骤：
-                        </p>
-                        <ul>
-                            <li><strong>① 模型下载与格式转换：</strong>
-                                <ul>
-                                    <li>从 Hugging Face 或 ModelScope 等模型社区下载模型权重（如 Llama-3-8B-Instruct）。</li>
-                                    <li>优先下载 <code>.safetensors</code> 格式。如果是 <code>.pth</code> 格式，建议在安全环境中转换为 <code>.safetensors</code>。</li>
-                                </ul>
-                            </li>
-                            <li><strong>② 选择推理框架：</strong>
-                                <ul>
-                                    <li><strong>vLLM:</strong> <strong>性能首选。</strong> 专为 NVIDIA GPU 打造的高吞吐量推理框架，支持 PagedAttention 等技术，性能极高。</li>
-                                    <li><strong>TGI (Text Generation Inference):</strong> Hugging Face 官方框架，功能全面，稳定成熟。</li>
-                                    <li><strong>Ollama:</strong> 部署和管理最简单的框架，适合快速测试和本地运行。</li>
-                                    <li><strong>llama.cpp (Python 绑定):</strong> 如果需要在 CPU 或非 NVIDIA GPU 上运行 GGUF 量化模型。</li>
-                                </ul>
-                            </li>
-                            <li><strong>③ 启动推理服务 (Inference Server)：</strong>
-                                <ul>
-                                    <li>使用 Slurm 向 GPU 队列（如 <code>gpu_queue</code>）提交一个作业，启动所选框架（如 vLLM）的服务。</li>
-                                    <li>此服务会<strong>将模型加载到 GPU 显存中</strong>，并监听一个网络端口（如 8000）。</li>
-                                    <li><strong>关键：</strong> 必须确保 GPU 显存 (VRAM) 足够大。例如 8B 模型（FP16）需要约 16GB 显存，70B 模型需要约 140GB 显存（需要 2xH100 或 1xH200）。</li>
-                                </ul>
-                            </li>
-                            <li><strong>④ API 接口调用：</strong>
-                                <ul>
-                                    <li>推理服务启动后，它会提供一个与 OpenAI 兼容的 API 接口（如 <code>/v1/chat/completions</code>）。</li>
-                                    <li>您的业务应用（如网站、Dify 平台）现在可以通过 HTTP 请求向这个 API 地址发送 JSON 数据（如 <code>{"model": "llama-3-8b", "messages": [...]}</code>），并接收模型的流式或非流式响应。</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="faq-item">
-                        <h3 id="q-ai-model-selection">Q: 我应该如何为我的应用场景选择合适的 AI 模型？</h3>
-                        <p>
-                            模型选型是 AI 成功的关键。不同的模型擅长不同的任务，以下是当前（2025年）主流模型的选型指南：
-                        </p>
-                        <div class="faq-item-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>应用场景</th>
-                                        <th>推荐模型</th>
-                                        <th>选型理由 (售前价值)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>通用聊天 / 文本生成 / RAG</strong></td>
-                                        <td><strong>Llama 3 (8B / 70B)</strong><br><strong>GLM-4 (9B / 130B)</strong></td>
-                                        <td><strong>Llama 3:</strong> 综合能力最强，中英文效果俱佳，社区生态最好，是开源模型的“事实标准”。<br><strong>GLM-4:</strong> 智谱 AI 出品，中文能力极其出色，并且原生支持强大的工具调用 (Toolchains) 和 Agents。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>文生图 (Text-to-Image)</strong></td>
-                                        <td><strong>Stable Diffusion 3 (SD3)</strong><br><strong>Stable Cascade</strong></td>
-                                        <td><strong>SD3:</strong> 效果最强，对复杂提示词（Prompt）的理解和排版（文字生成）能力有飞跃式提升。<br><strong>Stable Cascade:</strong> 效果优秀，但推理速度快、显存占用低，是“性价比”最高的出图方案。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>代码生成与辅助</strong></td>
-                                        <td><strong>Llama 3 (8B / 70B)</strong><br><strong>Code Llama (70B)</strong></td>
-                                        <td><strong>Llama 3:</strong> 新一代模型的代码能力已追平甚至超越了专门的代码模型。<br><strong>Code Llama:</strong> 专为代码优化的模型，在代码补全、Debug、生成测试用例方面依然非常强大。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>边缘/客户端/CPU 推理</strong></td>
-                                        <td><strong>Qwen2 (1.5B / 7B) - GGUF</strong><br><strong>Llama 3 (8B) - GGUF</strong></td>
-                                        <td>GGUF 量化格式是 CPU 推理的唯一选择。<strong>Qwen2 (通义千问):</strong> 阿里巴巴出品，小尺寸模型（1.5B, 7B）在同级别中表现极好，中英文均衡。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>文生视频 (Text-to-Video)</strong></td>
-                                        <td><strong>Sora (OpenAI, 未开放)</strong><br><strong>Stable Video Diffusion</strong></td>
-                                        <td><strong>Sora:</strong> 效果标杆。<strong>Stable Video Diffusion:</strong> 目前最成熟的开源方案，能生成几秒钟的短视频，适合作为技术预研。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>语音识别 (ASR)</strong></td>
-                                        <td><strong>Whisper (Large-v3)</strong></td>
-                                        <td>OpenAI 出品，是当前语音识别（转录）和翻译的“绝对标杆”，准确率极高。</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>文本转语音 (TTS)</strong></td>
-                                        <td><strong>GPT-4o (OpenAI)</strong><br><strong>ChatTTS</strong></td>
-                                        <td><strong>GPT-4o:</strong> 情感、语气最自然的 TTS。<br><strong>ChatTTS:</strong> 开源模型中的佼佼者，效果接近真人，支持中英文，适合构建语音助手。</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- MODIFIED: 计算器章节重编号 -->
+            <!-- ADDED: 新增计算器章节 -->
             <section id="section-calculator" class="faq-section">
-                <h2>🕸️ (十一) 网络拓扑计算器</h2>
+                <h2>🕸️ (十) 网络拓扑计算器</h2>
                 <div class="faq-item-container">
                     <div class="faq-item">
                         <h3 id="q-calculator-nonblocking">全线速无阻塞 (Fat-Tree) 网络计算器</h3>
@@ -2113,28 +2173,57 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- 密码锁逻辑 (新增) ---
+            const passwordOverlay = document.getElementById('password-overlay');
+            const passwordInput = document.getElementById('access-password');
+            const unlockBtn = document.getElementById('btn-unlock');
+            const errorMsg = document.getElementById('password-error');
+            const body = document.body;
+
+            // 预设密码
+            const CORRECT_PASS = 'zhanghuanyushidameinv';
+
+            function checkPassword() {
+                if (passwordInput.value === CORRECT_PASS) {
+                    // 密码正确，移除遮罩和锁定样式
+                    passwordOverlay.style.display = 'none';
+                    body.classList.remove('locked');
+                } else {
+                    // 密码错误
+                    errorMsg.style.display = 'block';
+                    passwordInput.value = ''; // 清空输入框
+                    passwordInput.focus();
+                }
+            }
+
+            // 绑定点击事件
+            unlockBtn.addEventListener('click', checkPassword);
+
+            // 绑定回车键事件
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            // --- 密码锁逻辑结束 ---
+
+
+            // --- 导航菜单逻辑 ---
             const l1Links = document.querySelectorAll('.l1-link');
             
             l1Links.forEach(button => {
                 button.addEventListener('click', () => {
-                    // 切换按钮的 active 状态
                     button.classList.toggle('active');
-                    
-                    // 找到对应的 L2 菜单
                     const targetId = button.getAttribute('data-target');
                     const l2menu = document.querySelector(targetId);
                     
-                    // 切换 L2 菜单的展开/收起
                     if (l2menu.style.maxHeight) {
-                        // 如果已展开，则收起
                         l2menu.style.maxHeight = null;
                     } else {
-                        // 如果已收起，则展开 (设置为其内容高度)
                         let lMultiples = Math.ceil(l2menu.scrollHeight / 100);
-                        l2menu.style.maxHeight = (lMultiples * 100) + 'px'; // 使用 scrollHeight
+                        l2menu.style.maxHeight = (lMultiples * 100) + 'px';
                     }
 
-                    // (可选) 关闭其他打开的菜单
                     l1Links.forEach(otherButton => {
                         if (otherButton !== button) {
                             otherButton.classList.remove('active');
@@ -2145,7 +2234,7 @@
                 });
             });
 
-            // 默认展开第一个 L1 菜单 (服务器)
+            // 默认展开第一个 L1 菜单
             const firstL1Button = document.querySelector('.l1-link');
             if (firstL1Button) {
                 firstL1Button.classList.add('active');
@@ -2155,37 +2244,146 @@
                 }
             }
 
-            // --- ADDED: 计算器逻辑 ---
+            // --- 移动端导航切换 ---
+            const navToggleBtn = document.getElementById('nav-toggle');
+            const faqNav = document.querySelector('.faq-nav');
+
+            if (navToggleBtn && faqNav) {
+                navToggleBtn.addEventListener('click', () => {
+                    faqNav.classList.toggle('is-visible');
+                    if (faqNav.classList.contains('is-visible')) {
+                        navToggleBtn.textContent = '✕ 关闭导航';
+                    } else {
+                        navToggleBtn.textContent = '☰ 显示导航';
+                    }
+                });
+            }
+            
+            // --- 计算器逻辑 ---
             const calcButton = document.getElementById('calc-button');
             if (calcButton) {
                 calcButton.addEventListener('click', calculateNetwork);
             }
-        });
+            
+            // --- 新增：搜索逻辑 ---
+            const searchInput = document.getElementById('faq-search');
+            const allSections = document.querySelectorAll('.faq-section');
+            const allItems = document.querySelectorAll('.faq-item');
+            const noResultDiv = document.getElementById('search-no-result');
+            const searchTermDisplay = document.getElementById('search-term-display');
+            
+            // 存储所有可搜索元素的原始 HTML，用于高亮恢复
+            const originalContents = new Map();
+            document.querySelectorAll('.faq-item h3, .faq-item p, .faq-item li, .app-category h4, .app-category li, .faq-item-table td').forEach(elem => {
+                // 使用唯一ID或索引作为键。这里用元素引用自身
+                originalContents.set(elem, elem.innerHTML);
+            });
 
-        // MODIFIED: 彻底重写计算器逻辑
+            if (searchInput) {
+                // 使用 'input' 事件进行实时搜索
+                searchInput.addEventListener('input', filterFAQ);
+            }
+
+            function filterFAQ() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                let totalMatches = 0;
+                
+                // 清除之前的高亮
+                clearHighlights();
+
+                if (searchTerm === "") {
+                    // 如果搜索词为空，全部显示
+                    allSections.forEach(section => section.style.display = '');
+                    allItems.forEach(item => item.style.display = '');
+                    noResultDiv.style.display = 'none';
+                    return;
+                }
+                
+                const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+
+                allSections.forEach(section => {
+                    let sectionHasMatch = false;
+                    
+                    const itemsInSection = section.querySelectorAll('.faq-item');
+                    
+                    itemsInSection.forEach(item => {
+                        const itemText = item.textContent.toLowerCase();
+                        let itemHasMatch = false;
+
+                        if (itemText.includes(searchTerm)) {
+                            itemHasMatch = true;
+                            sectionHasMatch = true;
+                            totalMatches++;
+                            
+                            // 在 item 内部查找并高亮
+                            const elementsToSearch = item.querySelectorAll('h3, p, li, .app-category h4, .app-category li, .faq-item-table td');
+                            elementsToSearch.forEach(elem => {
+                                const original = originalContents.get(elem);
+                                // 检查原始文本是否包含搜索词，防止高亮嵌套
+                                if (original && original.toLowerCase().includes(searchTerm)) {
+                                    elem.innerHTML = original.replace(regex, '<mark class="highlight">$1</mark>');
+                                }
+                            });
+                        }
+                        
+                        item.style.display = itemHasMatch ? '' : 'none';
+                    });
+                    
+                    section.style.display = sectionHasMatch ? '' : 'none';
+                });
+
+                // 处理“无结果”提示
+                if (totalMatches === 0) {
+                    searchTermDisplay.textContent = searchInput.value;
+                    noResultDiv.style.display = 'block';
+                } else {
+                    noResultDiv.style.display = 'none';
+                }
+            }
+
+            function clearHighlights() {
+                // 恢复所有元素的原始 HTML
+                originalContents.forEach((originalHTML, elem) => {
+                    if (elem.innerHTML !== originalHTML) {
+                        elem.innerHTML = originalHTML;
+                    }
+                });
+
+                // 或者使用更简单粗暴的方法（但性能稍差）：
+                // document.querySelectorAll('mark.highlight').forEach(mark => {
+                //     mark.replaceWith(mark.textContent);
+                // });
+            }
+            
+            // 辅助函数：转义正则表达式特殊字符
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
+        }); // END DOMContentLoaded
+
+        // 计算器函数
         function calculateNetwork() {
             const switchModel = document.getElementById('calc-switch').value;
-            // MODIFIED: 获取 HCA 的速率和文本
             const hcaSelect = document.getElementById('calc-hca');
             const hcaSpeed = parseInt(hcaSelect.value, 10);
-            const hcaText = hcaSelect.options[hcaSelect.selectedIndex].text; // 获取选中的文本
+            const hcaText = hcaSelect.options[hcaSelect.selectedIndex].text;
             const nodeCount = parseInt(document.getElementById('calc-nodes').value, 10);
             const resultDiv = document.getElementById('calc-result');
 
             let k, portSpeed, switchName;
             if (switchModel === 'qm8700') {
-                k = 40; // 物理端口数
-                portSpeed = 200; // 端口速率
+                k = 40;
+                portSpeed = 200;
                 switchName = "QM8700 (40x200G)";
-            } else { // qm9700
-                k = 64; // 物理端口数
-                portSpeed = 400; // 端口速率
+            } else {
+                k = 64;
+                portSpeed = 400;
                 switchName = "QM9700 (64x400G)";
             }
 
             let html = `<h4>网络拓扑计算结果</h4>`;
             
-            // --- 1. 验证输入 ---
             if (!nodeCount || nodeCount <= 0) {
                 html += `<p class="calc-error">错误：请输入一个有效的节点端口数量。</p>`;
                 resultDiv.innerHTML = html;
@@ -2200,9 +2398,8 @@
                 return;
             }
             
-            // --- 2. 计算基础参数 ---
             const breakoutFactor = portSpeed / hcaSpeed;
-            const k_eff = k * breakoutFactor; // 交换机等效逻辑端口数
+            const k_eff = k * breakoutFactor;
             
             html += `<p><strong>基础参数：</strong></p>`;
             html += `<ul>`;
@@ -2213,8 +2410,6 @@
             html += `</ul>`;
             html += `<hr style="border:0; border-top: 1px dashed #ccc; margin: 15px 0;">`;
 
-            // --- 3. 场景 1: 1-Layer 拓扑 (单交换机) ---
-            // 核心逻辑：如果节点数小于等于交换机总逻辑端口数，则只需要1台交换机
             if (nodeCount <= k_eff) {
                 html += `<p><strong>计算方案：1-Layer 拓扑 (单交换机)</strong></p>`;
                 html += `<p>所需节点数 (<code>${nodeCount}</code>) 不超过单台交换机的最大逻辑端口 (<code>${k_eff}</code>)。</p>`;
@@ -2225,21 +2420,10 @@
                 html += `<p>下行线缆 (节点-交换机): <code>${nodeCount}</code> 条 (${hcaSpeed}G)</li>`;
             
             } else {
-            // --- 4. 场景 2: 2-Layer 拓扑 (Fat-Tree) ---
-                // 采用标准 1:1 Clos 架构，k/2 物理口向下，k/2 物理口向上
                 const physicalDownlinksPerLeaf = k / 2;
                 const physicalUplinksPerLeaf = k / 2;
-                
-                // 每台 Leaf 能带的节点数
                 const numNodesPerLeaf = physicalDownlinksPerLeaf * breakoutFactor; 
-                
-                // 1:1 架构要求的 Spine 交换机数量 (等于 Leaf 的物理上行口)
-                // const numSpines = physicalUplinksPerLeaf; // <-- 旧逻辑
-                
-                // 每台 Spine 能连接的 Leaf 交换机数 (等于 Spine 的物理口)
                 const maxLeaves = k; 
-                
-                // 2层网络最大支持的节点数
                 const maxNodes = maxLeaves * numNodesPerLeaf;
 
                 if (nodeCount > maxNodes) {
@@ -2249,19 +2433,12 @@
                     html += `<p>请考虑 3 层 Clos 网络或联系我们的售前专家。</p>`;
                 
                 } else {
-                    // 计算所需的 Leaf 交换机数量
                     const numLeaves = Math.ceil(nodeCount / numNodesPerLeaf);
-                    
-                    // MODIFIED: 1:1 架构要求的 Spine 交换机数量 S = (L * (k/2)) / k = L / 2
-                    // 必须向上取整，以处理 L 为奇数的情况，确保上行带宽
                     const numSpines = Math.ceil(numLeaves / 2); 
-                    
                     const totalSwitches = numLeaves + numSpines;
-                    
-                    // 线缆计算
-                    const downlinks = nodeCount; // 节点到 Leaf
-                    const uplinks_logical = numLeaves * physicalUplinksPerLeaf * breakoutFactor; // Leaf 到 Spine (逻辑)
-                    const uplinks_physical = numLeaves * physicalUplinksPerLeaf; // Leaf 到 Spine (物理)
+                    const downlinks = nodeCount;
+                    const uplinks_physical = numLeaves * physicalUplinksPerLeaf;
+                    const uplinks_logical = uplinks_physical * breakoutFactor; 
 
                     html += `<p><strong>计算方案：2-Layer 1:1 无阻塞 Fat-Tree</strong></p>`;
                     html += `<ul>`;
@@ -2270,12 +2447,9 @@
                     html += `</ul>`;
                     html += `<p>Leaf (叶) 交换机数量: <code>${numLeaves}</code> 台</p>`;
                     html += `<p>Spine (脊) 交换机数量: <code>${numSpines}</code> 台</p>`;
-                    // MODIFIED: 更新注释以匹配新逻辑
                     html += `<p style="font-size: 0.9em; color: #666;"><em>(注: 1:1无阻塞架构 (S=L/2)。总Leaf上行 = <code>${numLeaves} * ${physicalUplinksPerLeaf}</code>。总Spine端口 = <code>${numSpines} * ${k}</code>。)</em></p>`;
                     html += `<p><strong>总计需要 <code>${totalSwitches}</code> 台 ${switchName} 交换机。</strong></p>`;
                     html += `<br>`;
-                    
-                    // MODIFIED: 更改了线缆需求的描述，使其更清晰
                     html += `<p><strong>线缆需求：</strong></p>`;
                     html += `<p>下行线缆 (节点-Leaf): <code>${downlinks}</code> 条 (${hcaSpeed}G 逻辑链路)</li>`;
                     html += `<p>上行线缆 (Leaf-Spine): <code>${uplinks_physical}</code> 条 (${portSpeed}G 物理链路)</li>`;
@@ -2291,4 +2465,3 @@
 
 </body>
 </html>
-
