@@ -19,71 +19,6 @@
             padding: 0;
         }
 
-        /* --- 密码访问层样式 (新增) --- */
-        #password-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f4f7f6; /* 与背景色一致，遮挡内容 */
-            z-index: 99999; /* 最高层级 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .password-box {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-        .password-box h2 {
-            margin-top: 0;
-            color: #004a99;
-        }
-        .password-box input {
-            width: 100%;
-            padding: 12px;
-            margin: 20px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .password-box button {
-            background-color: #004a99;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .password-box button:hover {
-            background-color: #003366;
-        }
-        #password-error {
-            color: #d9534f;
-            margin-top: 10px;
-            font-size: 0.9em;
-            display: none;
-        }
-        /* 模糊背景效果（可选，密码层存在时背景模糊） */
-        body.locked > *:not(#password-overlay) {
-            filter: blur(5px);
-        }
-        /* --- 密码访问层样式结束 --- */
-
         /* 顶部 Header */
         header {
             background-color: #004a99;
@@ -605,21 +540,118 @@
                 padding-left: 25px !important;
             }
         }
+
+        /* --- 合并内容：AMD EPYC 与 Intel Xeon.html --- */
+        .cpu-compare-report {
+            margin-top: 10px;
+        }
+
+        /* 取消 FAQ 的 Q:/A: 样式污染 */
+        .cpu-compare-report p,
+        .cpu-compare-report ul,
+        .cpu-compare-report table,
+        .cpu-compare-report h2,
+        .cpu-compare-report h3,
+        .cpu-compare-report .summary-section {
+            position: static !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        .cpu-compare-report p::before,
+        .cpu-compare-report ul::before,
+        .cpu-compare-report h3::before,
+        .cpu-compare-report .summary-section::before {
+            content: none !important;
+        }
+
+        .cpu-compare-report h2 {
+            font-size: 1.25em;
+            color: #333;
+            margin: 18px 0 10px 0;
+            padding: 0;
+            border: none;
+            background: none;
+        }
+
+        .cpu-compare-report p {
+            margin: 10px 0 0 0;
+        }
+
+        .cpu-compare-report table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+            background-color: #fff;
+        }
+
+        .cpu-compare-report th,
+        .cpu-compare-report td {
+            border: 1px solid #dee2e6;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .cpu-compare-report th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .cpu-compare-report tr:nth-child(even) td {
+            background-color: #f8f9fa;
+        }
+
+        .cpu-compare-report .summary-section {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        .cpu-compare-report .summary-section h3 {
+            padding-left: 0 !important;
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .cpu-compare-report ul {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        .cpu-compare-report li {
+            margin-left: 0;
+        }
+
+        .cpu-compare-report .summary-section ul {
+            padding-left: 20px !important;
+            margin-top: 8px;
+            margin-bottom: 15px;
+        }
+
+        .cpu-compare-report .summary-point {
+            margin-bottom: 12px;
+        }
+
+        .cpu-compare-report .summary-point li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .cpu-compare-report table {
+                font-size: 0.85em;
+                display: block;
+                overflow-x: auto;
+            }
+        }
         
     </style>
 </head>
-<body class="locked">
-
-    <!-- 密码访问层 (新增) -->
-    <div id="password-overlay">
-        <div class="password-box">
-            <h2>🔒 访问受限</h2>
-            <p>请输入密码以查看 HPC 售前技术 FAQ 内容。</p>
-            <input type="password" id="access-password" placeholder="请输入访问密码">
-            <button id="btn-unlock">解锁页面</button>
-            <div id="password-error">密码错误，请重试！</div>
-        </div>
-    </div>
+<body>
 
     <header>
         <h1>HPC 高性能计算 售前技术 FAQ</h1>
@@ -655,6 +687,7 @@
                         <li><a href="#q-cpu-avx512">什么是 AVX-512 指令集？</a></li>
                         <li><a href="#q-cpu-turin">AMD Turin (Zen 5) CPU 有何优势？</a></li>
                         <li><a href="#q-cpu-gnr">Intel GNR-AP CPU 有何优势？</a></li>
+                        <li><a href="#q-cpu-epyc-vs-xeon">AMD EPYC vs Intel Xeon 对比报告</a></li>
                     </ul>
                 </li>
                 <li>
@@ -664,6 +697,8 @@
                         <li><a href="#q-gpu-h200">NVIDIA H200 详解</a></li>
                         <li><a href="#q-gpu-h100">NVIDIA H100 (PCIe) 详解</a></li>
                         <li><a href="#q-gpu-h20">NVIDIA H20 详解</a></li>
+                        <li><a href="#q-gpu-l40">NVIDIA L40 详解</a></li>
+                        <li><a href="#q-gpu-l40s">NVIDIA L40S 详解</a></li>
                         <li><a href="#q-gpu-l20">NVIDIA L20 详解</a></li>
                         <li><a href="#q-gpu-5090">GeForce RTX 5090 详解</a></li>
                         <li><a href="#q-gpu-4090">GeForce RTX 4090 详解</a></li>
@@ -821,6 +856,7 @@
                             <li><strong>GPU 节点 (GPU Node):</strong> 特殊的计算节点，配备一个或多个高性能 GPU（如 H20, L20），专用于 AI 训练、分子动力学模拟等 GPU 加速任务。</li>
                         </ul>
                     </div>
+
                     <div class="faq-item">
                         <h3 id="q-server-gpu-diff">GPU 服务器（如 8 卡 H20）和普通 CPU 服务器在设计上有什么关键区别？</h3>
                         <p>
@@ -921,6 +957,257 @@
                             <li><strong>强大的扩展性：</strong> 同样支持 PCIe 5.0 和 CXL 2.0，使其在连接 GPU 和高速互联时游刃余地。</li>
                         </ul>
                     </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-cpu-epyc-vs-xeon">AMD EPYC vs Intel Xeon：服务器处理器全维度对比报告（已合并）</h3>
+                        <p>以下内容已从《AMD EPYC 与 Intel Xeon.html》合并到本 FAQ 页面中，便于统一检索与阅读。</p>
+                        <div class="cpu-compare-report">
+                            <h2>一、产品演进时间线对比</h2>
+                            <p>本表纵向对比了AMD EPYC与Intel Xeon可扩展系列处理器的代际演进，展现了各自的技术发展路径与关键革新点。</p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>代次</th>
+                                        <th>推出年份</th>
+                                        <th>AMD EPYC 系列与代号</th>
+                                        <th>Intel Xeon 可扩展系列与代号</th>
+                                        <th>该代次的关键革新与竞争焦点</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>第一代</strong></td>
+                                        <td>2017</td>
+                                        <td><strong>系列</strong>：EPYC 7001<br><strong>代号</strong>：Naples (那不勒斯)<br><strong>架构</strong>：Zen</td>
+                                        <td><strong>系列</strong>：第一代至强可扩展<br><strong>代号</strong>：Skylake-SP</td>
+                                        <td><strong>AMD重返市场</strong>：凭借多核和性价比挑战Intel。<br><strong>Intel确立分级</strong>：引入铂金/金/银/青铜的等级体系。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>第二代</strong></td>
+                                        <td>2019</td>
+                                        <td><strong>系列</strong>：EPYC 7002<br><strong>代号</strong>：Rome (罗马)<br><strong>架构</strong>：Zen 2</td>
+                                        <td><strong>系列</strong>：第二代至强可扩展<br><strong>代号</strong>：Cascade Lake</td>
+                                        <td><strong>AMD核心数飞跃</strong>：采用Chiplet设计，核心数大幅领先。<br><strong>Intel优化AI</strong>：支持DL Boost指令集，强化AI推理。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>第三代</strong></td>
+                                        <td>2021</td>
+                                        <td><strong>系列</strong>：EPYC 7003<br><strong>代号</strong>：Milan (米兰)<br><strong>架构</strong>：Zen 3</td>
+                                        <td><strong>系列</strong>：第三代至强可扩展<br><strong>代号</strong>：Ice Lake-SP / Cooper Lake</td>
+                                        <td><strong>AMD提升单核</strong>：Zen 3架构带来显著IPC提升。<br><strong>Intel进入10nm</strong>：制程更新，增加核心数与内存通道。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>第四代</strong></td>
+                                        <td>2022-2023</td>
+                                        <td><strong>系列</strong>：EPYC 9004/8004/4004<br><strong>代号</strong>：Genoa (热那亚)<br><strong>架构</strong>：Zen 4</td>
+                                        <td><strong>系列</strong>：第四代至强可扩展<br><strong>代号</strong>：Sapphire Rapids</td>
+                                        <td><strong>平台世代交替</strong>：两家同时进入<strong>DDR5</strong>与<strong>PCIe 5.0</strong>时代。<br><strong>AMD</strong>：主打能效与高核心数（最多96核）。<br><strong>Intel</strong>：集成<strong>专属加速器</strong>（DSA, QAT等），强化特定负载。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>第五代</strong></td>
+                                        <td>2023-2024</td>
+                                        <td><strong>系列</strong>：EPYC 9005/4005<br><strong>代号</strong>：Turin (都灵)<br><strong>架构</strong>：Zen 5 / Zen 5c</td>
+                                        <td><strong>系列</strong>：第五代至强可扩展<br><strong>代号</strong>：Emerald Rapids</td>
+                                        <td><strong>AMD混合架构</strong>：首次在同一代混合Zen 5与Zen 5c核心，最多达<strong>192核</strong>。<br><strong>Intel优化</strong>：作为四代优化版，大幅增加缓存。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>第六代(最新)</strong></td>
+                                        <td>2024起</td>
+                                        <td><strong>系列</strong>：待定<br><strong>代号</strong>：Venice (预计)<br><strong>架构</strong>：Zen 6 (预计)</td>
+                                        <td><strong>系列</strong>：<strong>至强 6</strong><br><strong>代号</strong>：Granite Rapids (性能核) / Sierra Forest (能效核)</td>
+                                        <td><strong>技术路线彻底分化</strong>：<br>1. <strong>Intel</strong>：推出<strong>“纯P核”</strong>（性能核）与<strong>“纯E核”</strong>（能效核）<strong>两条独立产品线</strong>。<br>2. <strong>AMD</strong>：预计继续在同一CPU内集成不同架构核心。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h2>二、核心规格与平台对比（聚焦当前4、5、6代主流平台）</h2>
+                            <p>本表横向对比了当前及最新主流平台的关键技术规格，为硬件选型提供直接参数参考。</p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>对比维度</th>
+                                        <th>AMD EPYC 9004 (Genoa)</th>
+                                        <th>AMD EPYC 9005 (Turin)</th>
+                                        <th>Intel Xeon 可扩展 (Sapphire Rapids)</th>
+                                        <th>Intel Xeon 可扩展 (Emerald Rapids)</th>
+                                        <th>Intel 至强 6 (Granite Rapids)</th>
+                                        <th>Intel 至强 6 (Sierra Forest)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>核心架构</strong></td>
+                                        <td>Zen 4</td>
+                                        <td>Zen 5 / Zen 5c (混合)</td>
+                                        <td>Golden Cove</td>
+                                        <td>Raptor Cove</td>
+                                        <td><strong>Redwood Cove (P核)</strong></td>
+                                        <td><strong>全 Gracemont (E核)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>制程工艺</strong></td>
+                                        <td>5nm (TSMC)</td>
+                                        <td>4nm(Zen5)/3nm(Zen5c)/6nm(IOD) 混合</td>
+                                        <td>Intel 7</td>
+                                        <td>Intel 7</td>
+                                        <td><strong>Intel 3</strong></td>
+                                        <td><strong>Intel 3</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>最大核心数</strong></td>
+                                        <td>96核 / 192线程</td>
+                                        <td><strong>192核</strong> / 384线程 (混合)</td>
+                                        <td>60核 / 120线程</td>
+                                        <td>64核 / 128线程</td>
+                                        <td>最多128核 / 256线程</td>
+                                        <td>最多144核 / 144线程</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>内存支持</strong></td>
+                                        <td><strong>DDR5-4800</strong><br><strong>12通道</strong></td>
+                                        <td><strong>DDR5-6000</strong><br>12通道</td>
+                                        <td>DDR5-4800<br>8通道</td>
+                                        <td>DDR5-5600<br>8通道</td>
+                                        <td><strong>DDR5-6400</strong> / <strong>最高8800MT/s (MRDIMM)</strong><br>8或12通道</td>
+                                        <td><strong>DDR5-6400</strong><br>8通道</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>PCIe支持</strong></td>
+                                        <td><strong>PCIe 5.0</strong><br>最多128通道 (单路)</td>
+                                        <td><strong>PCIe 5.0</strong><br>最多160通道</td>
+                                        <td>PCIe 5.0<br>80通道</td>
+                                        <td>PCIe 5.0<br>80通道</td>
+                                        <td><strong>PCIe 5.0</strong><br>最多96通道</td>
+                                        <td><strong>PCIe 5.0</strong><br>最多88通道</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>三级缓存</strong></td>
+                                        <td>最多384MB (标准)/1152MB (3D V-Cache)</td>
+                                        <td>最多<strong>384MB</strong></td>
+                                        <td>最多105MB</td>
+                                        <td>最多<strong>320MB</strong></td>
+                                        <td>未明确 (L2缓存显著增加)</td>
+                                        <td>未明确</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>专用加速引擎</strong></td>
+                                        <td>无独立单元</td>
+                                        <td>无独立单元</td>
+                                        <td><strong>集成四大加速器</strong>：<br>DSA, QAT, IAA, DLB</td>
+                                        <td>集成四大加速器，增强</td>
+                                        <td><strong>集成加速器 (增强版)</strong>，支持AMX</td>
+                                        <td>集成加速器</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>平台插座</strong></td>
+                                        <td><strong>SP5</strong> (LGA6096)</td>
+                                        <td><strong>SP5</strong> (与上代兼容)</td>
+                                        <td>LGA4677</td>
+                                        <td>LGA4677 (与上代兼容)</td>
+                                        <td><strong>LGA4710 (SP)</strong> / <strong>LGA7529 (AP)</strong></td>
+                                        <td><strong>LGA4710</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>主要优势场景</strong></td>
+                                        <td>AI、HPC、企业关键负载</td>
+                                        <td>严苛AI与关键业务负载</td>
+                                        <td>AI、数据分析、存储/网络压缩</td>
+                                        <td>对缓存和带宽敏感的企业应用</td>
+                                        <td><strong>高性能计算、严苛云、AI (机头)</strong></td>
+                                        <td><strong>高密度云原生、微服务、CDN</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>命名示例</strong></td>
+                                        <td>EPYC 9654</td>
+                                        <td>EPYC 9755</td>
+                                        <td>Xeon 铂金 8480+</td>
+                                        <td>Xeon 铂金 8592+</td>
+                                        <td><strong>至强6 6980P</strong></td>
+                                        <td><strong>至强6 6780E</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h2>三、命名规则详解对比</h2>
+                            <p>本表系统解读了AMD EPYC与Intel Xeon新旧系列的型号命名逻辑，帮助快速理解产品定位。</p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>命名要素</th>
+                                        <th>AMD EPYC 命名规则 (以9004/9005系列为例)</th>
+                                        <th>Intel Xeon 可扩展系列命名规则 (旧，至第5代)</th>
+                                        <th>Intel <strong>至强 6</strong> 系列命名规则 (新，第6代起)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>系列与代次标识</strong></td>
+                                        <td><strong>首位数字</strong>：产品层级。<br>• <strong>9</strong>：旗舰系列<br>• <strong>8</strong>：单路优化系列<br>• <strong>4</strong>：入门系列<br><strong>末位数字</strong>：<strong>明确代次</strong>。<br>• <strong>EPYC 9*004*</strong>：第四代<br>• <strong>EPYC 9*005*</strong>：第五代</td>
+                                        <td><strong>四位数字解读</strong>：<br>• <strong>首位</strong>：市场等级。<br>  - <strong>8/9</strong>：铂金<br>  - <strong>6/5</strong>：金牌<br>  - <strong>4</strong>：银牌<br>  - <strong>3</strong>：青铜<br>• <strong>第二位</strong>：<strong>代次</strong>。<br>  - <strong>1</strong>：一代<br>  - <strong>...</strong> <br>  - <strong>5</strong>：五代<br>• 示例：<strong>铂金 *8*48*0*</strong>：8(铂金)4(四代)80(SKU)</td>
+                                        <td>简化为：<strong>至强6 + 4位数字 + 后缀字母</strong>。<br>• <strong>首位 “6”</strong>：平台（至强6）。<br>• <strong>第二位</strong>：系列层级 (如9/6/5)。<br>• <strong>第三位</strong>：代次标识 (如9)。<br>• <strong>关键后缀</strong>：<br>  - <strong>P</strong>：<strong>性能核</strong>系列<br>  - <strong>E</strong>：<strong>能效核</strong>系列</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SKU型号与核心数暗示</strong></td>
+                                        <td><strong>中间两位数字</strong>：SKU型号，<strong>数字越大，通常核心数越多、频率越高</strong>。<br>• EPYC <strong>96</strong>54：高端96核型号。<br>• EPYC <strong>93</strong>24：中端32核型号。</td>
+                                        <td><strong>末两位数字</strong>：SKU序号，<strong>数字越大，通常规格越高</strong>（核心/频率/缓存）。<br>• 铂金 <strong>8480</strong> > 铂金 <strong>8470</strong>。</td>
+                                        <td><strong>末两位数字</strong>：SKU序号，规则延续，<strong>数字越大规格越高</strong>。<br>• 至强6 <strong>6980</strong>P > 至强6 <strong>6960</strong>P。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>关键后缀字母</strong></td>
+                                        <td><strong>功能与配置标识</strong>：<br>• <strong>P</strong>：单路服务器处理器。<br>• <strong>F</strong>：高基础频率。<br>• <strong>D</strong>：针对密集型存储和数据库优化。<br>• <strong>T</strong>：低功耗优化。</td>
+                                        <td><strong>功能与优化标识</strong> (部分)：<br>• <strong>+</strong>：启用全部内置加速器（DSA, QAT等）。<br>• <strong>M</strong>：针对AI/媒体优化。<br>• <strong>N</strong>：网络/NFV/5G优化。<br>• <strong>S</strong>：存储优化，启用全加速器。<br>• <strong>T</strong>：长生命周期、高可靠性。<br>• <strong>V</strong>：虚拟机密度/SaaS云优化。</td>
+                                        <td><strong>核心类型标识 (最关键)</strong>：<br>• <strong>P</strong>：<strong>性能核</strong>系列，即Granite Rapids。<br>• <strong>E</strong>：<strong>能效核</strong>系列，即Sierra Forest。</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>典型型号示例与解读</strong></td>
+                                        <td><strong>EPYC 9755</strong>：<br>9(旗舰) 75(高端SKU) 5(第五代)， Turin平台192核型号。</td>
+                                        <td><strong>Xeon Platinum 8592+</strong>：<br>8(铂金) 5(第五代) 92(顶级SKU) +(全加速器)， Emerald Rapids顶级型号。</td>
+                                        <td><strong>至强6 6780E</strong>：<br>6(平台) 7(系列) 9(代次) 80(SKU) <strong>E(能效核系列)</strong>， Sierra Forest高核心数型号。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h2>四、总结与选择要点</h2>
+                            <div class="summary-section">
+                                <div class="summary-point">
+                                    <h3>1. 技术路线根本差异</h3>
+                                    <ul>
+                                        <li><strong>AMD 路线</strong>：坚持 <strong>“同代架构统一，片上集成”</strong> 。在同一CPU内，通过标准性能核（如 Zen 5）与高密度核心（如 Zen 5c）的“混合”设计，来兼顾性能与核心密度。其平台（如 SP5 插座）的升级连续性通常较好。</li>
+                                        <li><strong>Intel 路线</strong>：自第六代（至强 6）起，实行 <strong>“异代架构分离，产品线专精”</strong> 。将产品线分拆为两条独立路径：
+                                            <ul>
+                                                <li><strong>纯性能核 (P-core)</strong> 系列：即 Granite Rapids，追求最高单核性能、高频率与强AI加速（AMX）。</li>
+                                                <li><strong>纯能效核 (E-core)</strong> 系列：即 Sierra Forest，追求极致的核心密度与能效比，专为云原生等高并发吞吐负载设计。</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="summary-point">
+                                    <h3>2. 关键选择维度</h3>
+                                    <ul>
+                                        <li><strong>追求极致核心密度与能效比</strong>：在 AMD <strong>EPYC 9005 (Turin，最多192核)</strong> 与 Intel <strong>至强6 E-core 系列 (Sierra Forest，最多144核)</strong> 之间对比。前者在同一平台提供更灵活的核心配置，后者在特定吞吐场景能效突出。</li>
+                                        <li><strong>需要极致单核性能与AI加速</strong>：Intel <strong>至强6 P-core 系列 (Granite Rapids)</strong> 凭借更高的频率、增强的AMX指令集和更多加速器，是AI训练与推理、高性能计算的强劲选择。</li>
+                                        <li><strong>需要特定硬件加速</strong>：如果工作负载涉及密集的数据处理、压缩、加密，Intel <strong>从第四代至第六代集成的DSA、QAT、IAA、DLB加速器</strong>具有独特优势。</li>
+                                        <li><strong>考虑平台升级成本与连续性</strong>：
+                                            <ul>
+                                                <li><strong>AMD</strong>：SP5 插座在 Genoa (第四代) 和 Turin (第五代) 间兼容。</li>
+                                                <li><strong>Intel</strong>：LGA4677 插座在第四、五代间兼容，但至强 6 (第六代) 需切换至新的 <strong>LGA4710 (SP)</strong> 或 <strong>LGA7529 (AP)</strong> 平台。</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="summary-point">
+                                    <h3>3. 命名规则快速识别要点</h3>
+                                    <ul>
+                                        <li><strong>AMD EPYC</strong>：关注 <strong>首位数字</strong> (定位：9/8/4) 和 <strong>末位数字</strong> (代次：4/5)。中间数字越大规格越高。</li>
+                                        <li><strong>Intel 至强（旧命名）</strong>：看型号的 <strong>第一位</strong> (等级) 和 <strong>第二位</strong> (代次)，并留意“<strong>+</strong>”等后缀。</li>
+                                        <li><strong>Intel 至强 6（新命名）</strong>：直接查看 <strong>后缀字母 “P” 或 “E”</strong> ，这是区分其根本定位（高性能核 或 高能效核）的最关键标识。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             
@@ -986,17 +1273,58 @@
                         <h3 id="q-gpu-h20">NVIDIA H20 (PCIe) 的性能参数和定位是什么？</h3>
                         <ul class="gpu-specs">
                             <li><strong>核心定位:</strong> <strong>[带宽密集型 AI/HPC]</strong>。牺牲算力，换取超大带宽和容量，适合推理。</li>
-                            <li><strong>架构:</strong> Hopper (GH100 阉割版)</li>
-                            <li><strong>CUDA 核心:</strong> 11,520</li>
-                            <li><strong>Tensor 核心:</strong> 360 (第 4 代)</li>
+                            <li><strong>GPU 架构:</strong> NVIDIA Hopper</li>
                             <li><strong>显存 (VRAM):</strong> <strong>96 GB HBM3</strong></li>
                             <li><strong>显存带宽:</strong> <strong>4.0 TB/s</strong></li>
-                            <li><strong>FP64 (HPC):</strong> <strong>30 TFLOPS (Dense)</strong></li>
-                            <li><strong>FP32 (HPC):</strong> 60 TFLOPS (Dense)</li>
-                            <li><strong>TF32 (AI 训练):</strong> 296 TFLOPS (Sparse)</li>
-                            <li><strong>FP16/BF16 (AI):</strong> 592 TFLOPS (Sparse)</li>
-                            <li><strong>NVLink:</strong> 900 GB/s (NVLink Bridge)</li>
-                            <li><strong>TDP (功耗):</strong> 400W (PCIe 形态)</li>
+                            <li><strong>INT8/FP8 Tensor Core:</strong> 296 TFLOPS</li>
+                            <li><strong>BF16/FP16 Tensor Core:</strong> 148 TFLOPS</li>
+                            <li><strong>TF32 Tensor Core:</strong> 74 TFLOPS</li>
+                            <li><strong>FP32:</strong> 44 TFLOPS</li>
+                            <li><strong>FP64:</strong> 1 TFLOPS</li>
+                            <li><strong>L2 Cache:</strong> 60 MB</li>
+                            <li><strong>媒体引擎:</strong> 7 NVDEC, 7 NVJPEG</li>
+                            <li><strong>MIG:</strong> Up to 7 MIG</li>
+                            <li><strong>互联:</strong> PCIe Gen5 x16：128 GB/s；NVLink：900 GB/s</li>
+                            <li><strong>形态:</strong> 8-way HGX</li>
+                            <li><strong>功耗:</strong> 400 W</li>
+                            <li><strong>供货时间:</strong> PS：2023年11月；MP：2023年12月</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-l40">NVIDIA L40 (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI 渲染/推理/数字孪生]</strong>。企业级可视化与推理卡，NVENC/RT 功能完整，适合 Omniverse、批量推理与高端渲染。</li>
+                            <li><strong>架构:</strong> Ada Lovelace (AD102)</li>
+                            <li><strong>CUDA 核心:</strong> 18,176</li>
+                            <li><strong>Tensor 核心:</strong> 568 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 48 GB GDDR6 (带 ECC)</li>
+                            <li><strong>显存带宽:</strong> 864 GB/s</li>
+                            <li><strong>FP64 (HPC):</strong> <strong>~1.4 TFLOPS (Dense, 1/64)</strong> - 不适用传统 HPC 双精度</li>
+                            <li><strong>FP32 (HPC):</strong> 91.6 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> ~183 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> ~183 TFLOPS (Dense)，~366 TFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 不支持</li>
+                            <li><strong>TDP (功耗):</strong> 300W (PCIe 形态)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 id="q-gpu-l40s">NVIDIA L40S (PCIe) 的性能参数和定位是什么？</h3>
+                        <ul class="gpu-specs">
+                            <li><strong>核心定位:</strong> <strong>[AI 训练/推理/生成式]</strong>。在 L40 基础上增强计算密度，兼顾 NVENC/RT，可同时覆盖 GenAI 微调、批量推理和高端渲染。</li>
+                            <li><strong>架构:</strong> Ada Lovelace (AD102)</li>
+                            <li><strong>CUDA 核心:</strong> 18,176</li>
+                            <li><strong>Tensor 核心:</strong> 568 (第 4 代)</li>
+                            <li><strong>显存 (VRAM):</strong> 48 GB GDDR6 (带 ECC)</li>
+                            <li><strong>显存带宽:</strong> 864 GB/s</li>
+                            <li><strong>FP64 (HPC):</strong> <strong>~1.4 TFLOPS (Dense, 1/64)</strong> - 不适合传统 HPC 双精度</li>
+                            <li><strong>FP32 (HPC):</strong> ~91.6 TFLOPS (Dense)</li>
+                            <li><strong>TF32 (AI 训练):</strong> ~360 TFLOPS (Sparse)</li>
+                            <li><strong>FP16/BF16 (AI):</strong> ~362 TFLOPS (Dense)，~724 TFLOPS (Sparse)</li>
+                            <li><strong>FP8 (AI):</strong> ~724 TFLOPS (Dense)，~1.45 PFLOPS (Sparse)</li>
+                            <li><strong>NVLink:</strong> 不支持</li>
+                            <li><strong>TDP (功耗):</strong> 350W (PCIe 形态)</li>
                         </ul>
                     </div>
 
@@ -1004,17 +1332,21 @@
                         <h3 id="q-gpu-l20">NVIDIA L20 (PCIe) 的性能参数和定位是什么？</h3>
                         <ul class="gpu-specs">
                             <li><strong>核心定位:</strong> <strong>[AI推理/图形渲染]</strong>。专为推理优化，显存大，功耗低，带光追。</li>
-                            <li><strong>架构:</strong> Ada Lovelace (AD102)</li>
-                            <li><strong>CUDA 核心:</strong> 12,800</li>
-                            <li><strong>Tensor 核心:</strong> 400 (第 4 代)</li>
-                            <li><strong>显存 (VRAM):</strong> 48 GB GDDR6 (带 ECC)</li>
+                            <li><strong>GPU 架构:</strong> NVIDIA Ada Lovelace</li>
+                            <li><strong>显存 (VRAM):</strong> 48 GB GDDR6 w/ ECC</li>
                             <li><strong>显存带宽:</strong> 864 GB/s</li>
-                            <li><strong>FP64 (HPC):</strong> <strong>0.97 TFLOPS (Dense, 1/64)</strong> - 不适用HPC</li>
-                            <li><strong>FP32 (HPC):</strong> 62 TFLOPS (Dense)</li>
-                            <li><strong>TF32 (AI 训练):</strong> 992 TFLOPS (Sparse)</li>
-                            <li><strong>FP16/BF16 (AI):</strong> 992 TFLOPS (Sparse)</li>
-                            <li><strong>NVLink:</strong> 不支持</li>
-                            <li><strong>TDP (功耗):</strong> 275W (PCIe 形态)</li>
+                            <li><strong>INT8/FP8 Tensor Core:</strong> 239 TFLOPS</li>
+                            <li><strong>BF16/FP16 Tensor Core:</strong> 119.5 TFLOPS</li>
+                            <li><strong>TF32 Tensor Core:</strong> 59.8 TFLOPS</li>
+                            <li><strong>FP32:</strong> 59.8 TFLOPS</li>
+                            <li><strong>FP64:</strong> /</li>
+                            <li><strong>RT Core:</strong> Yes</li>
+                            <li><strong>L2 Cache:</strong> 96 MB</li>
+                            <li><strong>媒体引擎:</strong> 3 NVENC (+AV1), 3 NVDEC, 4 NVJPEG</li>
+                            <li><strong>互联:</strong> PCIe Gen4 x16：64 GB/s</li>
+                            <li><strong>形态:</strong> 2-slot FHFL</li>
+                            <li><strong>功耗:</strong> 275 W</li>
+                            <li><strong>供货时间:</strong> PS：2023年11月；MP：2023年12月</li>
                         </ul>
                     </div>
                     
@@ -1054,7 +1386,7 @@
 
                 </div>
             </section>
-            
+             
             <section id="section-storage" class="faq-section">
                 <h2>🗄️ (四) 分布式文件系统</h2>
                 <div class="faq-item-container">
@@ -1867,7 +2199,8 @@
                 <h2>🧬 (九) 应用软件详解</h2>
                 <div class="faq-item-container">
                     
-                    <!-- CFD/CAE -->
+                    <div class="app-category">
+                        <h3 class="app-category-title">计算机辅助工程（CFD/CAE）</h3>
                     <div class="faq-item">
                         <h3 id="q-app-fluent">什么是 Ansys Fluent / CFX？</h3>
                         <p>
@@ -1922,8 +2255,10 @@
                             <strong>售前价值：</strong> 我们提供针对 Intel/GNU 编译器和 OpenMPI 优化的 OpenFOAM 版本，并通过 InfiniBand 网络加速其并行计算，为科研用户提供一个高性能、零成本的 CFD 解决方案。
                         </p>
                     </div>
+                    </div>
 
-                    <!-- 生物/化学/材料 -->
+                    <div class="app-category">
+                        <h3 class="app-category-title">生命科学与生物信息</h3>
                     <div class="faq-item">
                         <h3 id="q-app-gromacs">什么是 GROMACS？</h3>
                         <p>
@@ -1996,6 +2331,10 @@
                             <strong>售前价值：</strong> GATK 流程计算密集且耗时。我们通过 Slurm 调度系统将其流程自动化，并利用多核 CPU 和大内存节点加速其计算，为基因研究提供可靠、高效的变异检测服务。
                         </p>
                     </div>
+                    </div>
+
+                    <div class="app-category">
+                        <h3 class="app-category-title">材料与化学模拟</h3>
                     <div class="faq-item">
                         <h3 id="q-app-vasp">什么是 VASP？</h3>
                         <p>
@@ -2041,8 +2380,10 @@
                             <strong>售前价值：</strong> 我们提供针对 MKL/FFTW 和 InfiniBand 优化的 QE 版本，为科研用户提供一个高性能、零成本的 DFT 计算平台。
                         </p>
                     </div>
+                    </div>
                     
-                    <!-- AI & Other -->
+                    <div class="app-category">
+                        <h3 class="app-category-title">AI 与通用计算</h3>
                     <div class="faq-item">
                         <h3 id="q-app-alphafold2">什么是 AlphaFold2？</h3>
                         <p>
@@ -2116,6 +2457,7 @@
                         </p>
                     </div>
 
+                    </div>
                 </div>
             </section>
             
@@ -2173,41 +2515,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 密码锁逻辑 (新增) ---
-            const passwordOverlay = document.getElementById('password-overlay');
-            const passwordInput = document.getElementById('access-password');
-            const unlockBtn = document.getElementById('btn-unlock');
-            const errorMsg = document.getElementById('password-error');
-            const body = document.body;
-
-            // 预设密码
-            const CORRECT_PASS = 'zhanghuanyushidameinv';
-
-            function checkPassword() {
-                if (passwordInput.value === CORRECT_PASS) {
-                    // 密码正确，移除遮罩和锁定样式
-                    passwordOverlay.style.display = 'none';
-                    body.classList.remove('locked');
-                } else {
-                    // 密码错误
-                    errorMsg.style.display = 'block';
-                    passwordInput.value = ''; // 清空输入框
-                    passwordInput.focus();
-                }
-            }
-
-            // 绑定点击事件
-            unlockBtn.addEventListener('click', checkPassword);
-
-            // 绑定回车键事件
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-            // --- 密码锁逻辑结束 ---
-
-
             // --- 导航菜单逻辑 ---
             const l1Links = document.querySelectorAll('.l1-link');
             
@@ -2271,6 +2578,20 @@
             const allItems = document.querySelectorAll('.faq-item');
             const noResultDiv = document.getElementById('search-no-result');
             const searchTermDisplay = document.getElementById('search-term-display');
+            let navVisibleBeforeSearch = null;
+
+            function setMobileNavVisible(visible) {
+                if (!faqNav || !navToggleBtn) return;
+                if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+                if (visible) {
+                    faqNav.classList.add('is-visible');
+                    navToggleBtn.textContent = '? 关闭导航';
+                } else {
+                    faqNav.classList.remove('is-visible');
+                    navToggleBtn.textContent = '? 显示导航';
+                }
+            }
             
             // 存储所有可搜索元素的原始 HTML，用于高亮恢复
             const originalContents = new Map();
@@ -2292,12 +2613,21 @@
                 clearHighlights();
 
                 if (searchTerm === "") {
+                    if (navVisibleBeforeSearch !== null) {
+                        setMobileNavVisible(navVisibleBeforeSearch);
+                        navVisibleBeforeSearch = null;
+                    }
                     // 如果搜索词为空，全部显示
                     allSections.forEach(section => section.style.display = '');
                     allItems.forEach(item => item.style.display = '');
                     noResultDiv.style.display = 'none';
                     return;
                 }
+
+                if (navVisibleBeforeSearch === null) {
+                    navVisibleBeforeSearch = !!(faqNav && faqNav.classList.contains('is-visible'));
+                }
+                setMobileNavVisible(true);
                 
                 const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
 
